@@ -35,6 +35,7 @@ class App < Sinatra::Base
     consensus_subject = create_subject(proposal)
     consensus_body = erb :proposer_email_template, locals: {
       proposer: proposer,
+      circle: circle,
       proposal: proposal
     }
 
