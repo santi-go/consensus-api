@@ -25,16 +25,6 @@ class App < Sinatra::Base
     response.headers['Access-Control-Allow-Origin'] = '*'
   end
 
-  options "*" do
-    response.headers["Allow"] = "GET, POST, OPTIONS"
-    response.headers["Access-Control-Allow-Headers"] = "*"
-    response.headers["Access-Control-Allow-Origin"] = "*"
-  end
-
-  post '/' do
-    'Consensus'
-  end
-
   post '/send-mail' do
     consensus_email = 'consensus@devscola.org'
     params = JSON.parse(request.body.read)
