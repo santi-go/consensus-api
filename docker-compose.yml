@@ -1,0 +1,13 @@
+version: '2'
+services:
+  api:
+    build:
+      context: .
+    volumes:
+      - '.:/api'
+    ports:
+      - '4567:4567'
+
+volumes:
+  bundle:
+    driver: local
