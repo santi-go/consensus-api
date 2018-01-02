@@ -17,13 +17,13 @@ describe 'Email' do
   end
 
   it 'subject finished when the sentence finds a dot, <br>, or </p> tag and has a maximum of six words' do
-    proposal = "La propuesta esta creada. Consiste en esto."
-    proposal1 = "La propuesta esta creada<br>"
-    proposal2 = "<p>propuesta</p><p></p><p>con br y p<br> Consiste en esto<p>"
+    plain_proposal = "La propuesta esta creada. Consiste en esto."
+    proposal_with_break_line = "La propuesta esta creada<br>"
+    proposal_html = "<p>propuesta</p><p></p><p>con br y p<br> Consiste en esto<p>"
 
-    expect(create_subject(proposal)).to eq("La propuesta esta creada.")
-    expect(create_subject(proposal1)).to eq("La propuesta esta creada...")
-    expect(create_subject(proposal2)).to eq("propuesta...")
+    expect(create_subject(plain_proposal)).to eq("La propuesta esta creada.")
+    expect(create_subject(proposal_with_break_line)).to eq("La propuesta esta creada...")
+    expect(create_subject(proposal_html)).to eq("propuesta...")
   end
 end
 
