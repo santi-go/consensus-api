@@ -1,6 +1,9 @@
 def create_subject(text)
+  opening_paragraph_pattern = /<p>/
+  starting_br_with_blank_space_pattern = /^(\s*<br>\s*)*/
 
-  text = text.gsub(/<p>/, "")
+  text = text.gsub(opening_paragraph_pattern, "")
+  text = text.gsub(starting_br_with_blank_space_pattern, "")
 
   if text.include? "</p>" then
     index_p_end = text.index('</p>')
@@ -11,7 +14,9 @@ def create_subject(text)
 
   if text.include? "<br>" then
     index_break_line = text.index('<br>')
-    if (index_break_line > 0) then text = text[0, index_break_line] end
+    if (index_break_line > 0) then
+      text = text[0, index_break_line]
+    end
   end
 
   text = text.split[0..5].join(" ")

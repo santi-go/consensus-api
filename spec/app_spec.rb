@@ -25,6 +25,12 @@ describe 'Email' do
     expect(create_subject(proposal_with_break_line)).to eq("La propuesta esta creada...")
     expect(create_subject(proposal_html)).to eq("propuesta...")
   end
+
+  it 'subject started with a <br> results in error' do
+    proposal_with_initial_br = "        <br>     <br><br> <br><br><br><br><br> propuesta<p></p><p>con br y p<br> Consiste en esto<p>"
+
+    expect(create_subject(proposal_with_initial_br)).to eq("propuesta...")
+  end
 end
 
 describe 'Send mail' do
