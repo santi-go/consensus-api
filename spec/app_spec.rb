@@ -33,7 +33,7 @@ describe 'Email' do
   end
 end
 
-describe 'Send mail' do
+describe 'Send mail endpoint' do
 
   include Rack::Test::Methods
 
@@ -51,13 +51,12 @@ describe 'Send mail' do
     Mail::TestMailer.deliveries.clear
   end
 
-  it 'accepts a json' do
-    body = { 'proposer': '',
-                  'circle': ['haha'],
-                  'proposal': ''}
+  it 'accepts a json with required parameters' do
+    body = { 'proposer': 'proposer@proposer.es',
+                  'circle': ['circle@circle.es'],
+                  'proposal': 'A proposal'}
 
     post '/send-mail', body.to_json
-
     expect(last_response).to be_ok
   end
 
@@ -67,18 +66,24 @@ describe 'Send mail' do
                   'proposal': 'Nuestra proposal es muy buena, porque lo decimos'}
 
     post '/send-mail', body.to_json
+
     sent_email = Mail::TestMailer.deliveries.first
     expect(sent_email.from).to eq(['consensus@devscola.org'])
   end
 
-  it 'uses both the circle and the proposer as To' do
+  it 'uses both the circle and the proposer as To with independent deliveries' do
     body = { 'proposer': 'pepe@correo.org',
                   'circle': ['raul@nocucha.es', 'raul@correo.com'],
                   'proposal': 'Nuestra proposal es muy buena, porque lo decimos'}
 
     post '/send-mail', body.to_json
-    sent_email = Mail::TestMailer.deliveries.first
-    expect(sent_email.to).to eq(['raul@nocucha.es', 'raul@correo.com', 'pepe@correo.org'])
+
+    sent_email = Mail::TestMailer.deliveries[0]
+    expect(sent_email.to).to eq(['raul@nocucha.es'])
+    sent_email = Mail::TestMailer.deliveries[1]
+    expect(sent_email.to).to eq(['raul@correo.com'])
+    sent_email = Mail::TestMailer.deliveries[2]
+    expect(sent_email.to).to eq(['pepe@correo.org'])
   end
 
   it 'uses proposal as Body' do
