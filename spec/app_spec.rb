@@ -71,6 +71,23 @@ describe 'Send mail endpoint' do
     expect(sent_email.from).to eq(['consensus@devscola.org'])
   end
 
+  it 'ignores repeated recipients' do
+    body = { 'proposer': 'pepe@correo.org',
+            'circle': ['raul@nocucha.es', 'raul@nocucha.es', 'pepe@correo.org', 'raul@correo.com', 'raul@correo.com'],
+            'proposal': 'Nuestra proposal es muy buena, porque lo decimos'}
+
+    post '/send-mail', body.to_json
+
+    sent_email = Mail::TestMailer
+
+    expect(sent_email.deliveries[0].to).to eq(['raul@nocucha.es'])
+    expect(sent_email.deliveries[1].to).to eq(['pepe@correo.org'])
+    expect(sent_email.deliveries[2].to).to eq(['raul@correo.com'])
+
+    expect(sent_email.deliveries.length).to eq(3)
+
+  end
+
   it 'uses both the circle and the proposer as To with independent deliveries' do
     body = { 'proposer': 'pepe@correo.org',
                   'circle': ['raul@nocucha.es', 'raul@correo.com'],
@@ -106,7 +123,7 @@ describe 'Send mail endpoint' do
     expect(sent_email.subject).to eq('Nuestra proposal es muy buena, porque...')
   end
 
-    it 'uses a template' do
+  it 'uses a template' do
       body = { 'proposer': 'pepe@correo.org',
                     'circle': ['raul@nocucha.es', 'raul@correo.com'],
                     'proposal': 'Nuestra proposal es muy buena, porque lo decimos'}

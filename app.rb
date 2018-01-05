@@ -20,21 +20,21 @@ class App < Sinatra::Base
 
   post '/send-mail' do
     params = JSON.parse(request.body.read)
+    communication = Communication.new
 
     consensus_email = 'consensus@devscola.org'
     circle = params['circle']
     proposer = params['proposer']
-    consensus_to = circle + [proposer]
+    consensus_to = communication.remove_repeated_emails(circle, proposer)
     proposal = params['proposal']
     consensus_subject = create_subject(proposal)
 
     consensus_body = erb :proposer_email_template, locals: {
       proposer: proposer,
-      circle: circle,
+      circle: consensus_to,
       proposal: proposal
     }
 
-    communication = Communication.new
     communication.send_mail(consensus_email, consensus_to, consensus_subject, consensus_body)
   end
 end
