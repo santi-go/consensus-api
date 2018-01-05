@@ -5,7 +5,7 @@ require 'rack/test'
 require 'mail'
 
 require_relative '../app.rb'
-require_relative '../subject_method.rb'
+require_relative '../system/email_fields.rb'
 
 describe 'Email' do
   it 'subject has first six words of the proposal' do

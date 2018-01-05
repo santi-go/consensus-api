@@ -20,13 +20,4 @@ class Communication
       mail.deliver!
     end
   end
-
-  def remove_repeated_emails(circle, proposer)
-    cleaned_circle = []
-    list = circle + [proposer]
-    list.each do
-      |element| cleaned_circle << element unless cleaned_circle.include?(element)
-    end
-    cleaned_circle
-  end
 end

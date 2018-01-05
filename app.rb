@@ -4,8 +4,8 @@ require 'mail'
 require 'sinatra/cross_origin'
 require 'json'
 
-require_relative './subject_method'
-require_relative './system/service'
+require_relative './system/email_fields'
+require_relative './system/email_sender'
 
 class App < Sinatra::Base
 
@@ -25,7 +25,7 @@ class App < Sinatra::Base
     consensus_email = 'consensus@devscola.org'
     circle = params['circle']
     proposer = params['proposer']
-    consensus_to = communication.remove_repeated_emails(circle, proposer)
+    consensus_to = remove_repeated_emails(circle, proposer)
     consensus_to_beautified = consensus_to.to_s.gsub(/[\"\[\]]/,"")
     proposal = params['proposal']
     consensus_subject = create_subject(proposal)
