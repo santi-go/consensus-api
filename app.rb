@@ -26,12 +26,13 @@ class App < Sinatra::Base
     circle = params['circle']
     proposer = params['proposer']
     consensus_to = communication.remove_repeated_emails(circle, proposer)
+    consensus_to_beautified = consensus_to.to_s.gsub(/[\"\[\]]/,"")
     proposal = params['proposal']
     consensus_subject = create_subject(proposal)
 
     consensus_body = erb :proposer_email_template, locals: {
       proposer: proposer,
-      circle: consensus_to,
+      circle: consensus_to_beautified,
       proposal: proposal
     }
 

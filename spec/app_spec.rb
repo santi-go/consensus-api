@@ -123,14 +123,27 @@ describe 'Send mail endpoint' do
     expect(sent_email.subject).to eq('Nuestra proposal es muy buena, porque...')
   end
 
-  it 'uses a template' do
+  context 'uses a template' do
+    it 'including a proposer' do
+        body = { 'proposer': 'pepe@correo.org',
+                      'circle': ['raul@nocucha.es', 'raul@correo.com'],
+                      'proposal': 'Nuestra proposal es muy buena, porque lo decimos'}
+
+        post '/send-mail', body.to_json
+        sent_email = Mail::TestMailer.deliveries.first
+
+        expect(sent_email.body).to include('pepe@correo.org')
+      end
+
+    it 'with beautified circle list' do
       body = { 'proposer': 'pepe@correo.org',
                     'circle': ['raul@nocucha.es', 'raul@correo.com'],
                     'proposal': 'Nuestra proposal es muy buena, porque lo decimos'}
 
       post '/send-mail', body.to_json
       sent_email = Mail::TestMailer.deliveries.first
-
-      expect(sent_email.body).to include('pepe@correo.org')
+      circle_in_template = 'raul@nocucha.es, raul@correo.com, pepe@correo.org'
+      expect(sent_email.body).to include(circle_in_template)
     end
+  end
 end
