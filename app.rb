@@ -3,10 +3,9 @@ require 'sinatra/base'
 require 'mail'
 require 'sinatra/cross_origin'
 require 'json'
-require 'liquid'
 
-require_relative './system/email_fields'
 require_relative './system/email_sender'
+require_relative './system/notify_involved'
 
 class App < Sinatra::Base
 
@@ -27,15 +26,8 @@ class App < Sinatra::Base
     proposal = params['proposal']
 
     consensus_to = remove_repeated_emails(circle, proposer)
-    consensus_to_beautified = consensus_to.to_s.gsub(/[\"\[\]]/,"")
     consensus_subject = create_subject(proposal)
-
-    template = Liquid::Template.parse(File.read("./templates/proposer_email.liquid"))
-    consensus_body = template.render(
-      'proposer' => proposer,
-      'circle' => consensus_to_beautified,
-      'proposal' => proposal
-    )
+    consensus_body = Notify_involved.do(consensus_to, proposal, proposer)
 
     communication = Communication.new
     communication.send_mail(consensus_email, consensus_to, consensus_subject, consensus_body)
