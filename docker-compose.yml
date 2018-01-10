@@ -1,12 +1,13 @@
 version: '2'
 services:
   api:
-    build:
-      context: .
+    image: ruby:2.4.2
+    working_dir: '/api'
     volumes:
       - '.:/api'
     ports:
       - '4567:4567'
+    command: sh -c 'gem install bundle && bundle install && bundle exec rake'
 
 volumes:
   bundle:
