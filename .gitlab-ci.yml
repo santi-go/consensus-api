@@ -4,7 +4,7 @@ before_script:
   - bundle install
 
 build:
-  stage: build
+  stage: test
   script:
     - bundle exec rake &
     - bundle exec rake test
