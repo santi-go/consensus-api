@@ -13,10 +13,10 @@ class App < Sinatra::Base
   end
 
   before do
-    response.headers['Access-Control-Allow-Origin'] = '*'
+     response.headers['Access-Control-Allow-Origin'] = '*'
   end
 
-  post '/send-mail' do
+  post '/create-proposal' do
     params = JSON.parse(request.body.read)
     circle = params['circle']
     proposer = params['proposer']

@@ -1,0 +1,10 @@
+image: ruby:2.4.2
+
+before_script:
+  - bundle install
+
+build:
+  stage: test
+  script:
+    - bundle exec rake &
+    - bundle exec rake test
