@@ -5,33 +5,7 @@ require 'rack/test'
 require 'mail'
 
 require_relative '../app.rb'
-require_relative '../system/email_fields.rb'
 
-describe 'Email' do
-  it 'subject has first six words of the proposal' do
-    proposal = "En mi opinion deberiamos de crear una funcion que determine el uso del mail"
-
-    subject = create_subject(proposal)
-
-    expect(subject).to eq("En mi opinion deberiamos de crear...")
-  end
-
-  it 'subject finished when the sentence finds a dot, <br>, or </p> tag and has a maximum of six words' do
-    plain_proposal = "La propuesta esta creada. Consiste en esto."
-    proposal_with_break_line = "La propuesta esta creada<br>"
-    proposal_html = "<p>propuesta</p><p></p><p>con br y p<br> Consiste en esto<p>"
-
-    expect(create_subject(plain_proposal)).to eq("La propuesta esta creada.")
-    expect(create_subject(proposal_with_break_line)).to eq("La propuesta esta creada...")
-    expect(create_subject(proposal_html)).to eq("propuesta...")
-  end
-
-  it 'subject started with a <br> results in error' do
-    proposal_with_initial_br = "        <br>     <br><br> <br><br><br><br><br> propuesta<p></p><p>con br y p<br> Consiste en esto<p>"
-
-    expect(create_subject(proposal_with_initial_br)).to eq("propuesta...")
-  end
-end
 
 describe 'Send mail endpoint' do
 
