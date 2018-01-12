@@ -6,8 +6,8 @@ require_relative 'subject'
 
 class Notify_involved
   class << self
-    def do(circle, proposal, proposer)
-      consensus_to = to_notify(circle, proposer)
+    def do(involved, proposal, proposer)
+      consensus_to = to_notify(involved, proposer)
 
       consensus_subject = Subject.create(proposal)
 
@@ -15,7 +15,7 @@ class Notify_involved
       template = Liquid::Template.parse(File.read("./templates/proposer_email.liquid"))
       consensus_body = template.render(
         'proposer' => proposer,
-        'circle' => consensus_to_beautified,
+        'involved' => consensus_to_beautified,
         'proposal' => proposal
       )
       communication = Communication.new
@@ -24,9 +24,9 @@ class Notify_involved
 
     end
 
-    def to_notify(circle, proposer)
-      circle << proposer
-      circle.uniq
+    def to_notify(involved, proposer)
+      involved << proposer
+      involved.uniq
     end
 
 
