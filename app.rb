@@ -15,17 +15,18 @@ class App < Sinatra::Base
   end
 
   before do
-    response.headers['Access-Control-Allow-Origin'] = '*'
+     response.headers['Access-Control-Allow-Origin'] = '*'
   end
 
   post '/send-mail' do
+
     params = JSON.parse(request.body.read)
     consensus_email = 'consensus@devscola.org'
-    circle = params['circle']
+    involved = params['involved']
     proposer = params['proposer']
     proposal = params['proposal']
 
-    consensus_to = remove_repeated_emails(circle, proposer)
+    consensus_to = remove_repeated_emails(involved, proposer)
     consensus_subject = create_subject(proposal)
     consensus_body = Notify_involved.do(consensus_to, proposal, proposer)
 
