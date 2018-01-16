@@ -18,14 +18,10 @@ class App < Sinatra::Base
 
   post '/create-proposal' do
     params = JSON.parse(request.body.read)
-    involved = params['involved']
+    involved = params['circle']
     proposer = params['proposer']
     proposal = params['proposal']
 
-
-
     Notify_involved.do(involved, proposal, proposer)
-
-
   end
 end
