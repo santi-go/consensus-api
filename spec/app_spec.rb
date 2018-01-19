@@ -27,7 +27,7 @@ describe 'Send mail endpoint' do
 
   it 'accepts a json with required parameters' do
     body = { 'proposer': 'proposer@proposer.es',
-                  'involved': ['involved@involved.es'],
+                  'circle': ['involved@involved.es'],
                   'proposal': 'A proposal'}
 
     post '/create-proposal', body.to_json
@@ -36,7 +36,7 @@ describe 'Send mail endpoint' do
 
   it 'uses the consensus default email as From' do
     body = { 'proposer': 'pepe@correo.org',
-                  'involved': ['raul@nocucha.es', 'raul@correo.com'],
+                  'circle': ['raul@nocucha.es', 'raul@correo.com'],
                   'proposal': 'Nuestra proposal es muy buena, porque lo decimos'}
 
     post '/create-proposal', body.to_json
@@ -47,7 +47,7 @@ describe 'Send mail endpoint' do
 
   it 'ignores repeated recipients' do
     body = { 'proposer': 'pepe@correo.org',
-            'involved': ['raul@nocucha.es', 'raul@nocucha.es', 'pepe@correo.org', 'raul@correo.com', 'raul@correo.com'],
+            'circle': ['raul@nocucha.es', 'raul@nocucha.es', 'pepe@correo.org', 'raul@correo.com', 'raul@correo.com'],
             'proposal': 'Nuestra proposal es muy buena, porque lo decimos'}
 
     post '/create-proposal', body.to_json
@@ -64,7 +64,7 @@ describe 'Send mail endpoint' do
 
   it 'uses both the involved and the proposer as To with independent deliveries' do
     body = { 'proposer': 'pepe@correo.org',
-                  'involved': ['raul@nocucha.es', 'raul@correo.com'],
+                  'circle': ['raul@nocucha.es', 'raul@correo.com'],
                   'proposal': 'Nuestra proposal es muy buena, porque lo decimos'}
 
     post '/create-proposal', body.to_json
@@ -79,7 +79,7 @@ describe 'Send mail endpoint' do
 
   it 'uses proposal as Body' do
     body = { 'proposer': 'pepe@correo.org',
-                  'involved': ['raul@nocucha.es', 'raul@correo.com'],
+                  'circle': ['raul@nocucha.es', 'raul@correo.com'],
                   'proposal': 'Nuestra proposal es muy buena, porque lo decimos'}
 
     post '/create-proposal', body.to_json
@@ -89,7 +89,7 @@ describe 'Send mail endpoint' do
 
   it 'extracts subject from the proposal as Subject' do
     body = { 'proposer': 'pepe@correo.org',
-                  'involved': ['raul@nocucha.es', 'raul@correo.com'],
+                  'circle': ['raul@nocucha.es', 'raul@correo.com'],
                   'proposal': 'Nuestra proposal es muy buena, porque lo decimos'}
 
     post '/create-proposal', body.to_json
@@ -100,7 +100,7 @@ describe 'Send mail endpoint' do
   context 'uses a template' do
     it 'including a proposer' do
         body = { 'proposer': 'pepe@correo.org',
-                      'involved': ['raul@nocucha.es', 'raul@correo.com'],
+                      'circle': ['raul@nocucha.es', 'raul@correo.com'],
                       'proposal': 'Nuestra proposal es muy buena, porque lo decimos'}
 
         post '/create-proposal', body.to_json
@@ -111,7 +111,7 @@ describe 'Send mail endpoint' do
 
     it 'with beautified involved list' do
       body = { 'proposer': 'pepe@correo.org',
-                    'involved': ['raul@nocucha.es', 'raul@correo.com'],
+                    'circle': ['raul@nocucha.es', 'raul@correo.com'],
                     'proposal': 'Nuestra proposal es muy buena, porque lo decimos'}
 
       post '/create-proposal', body.to_json
