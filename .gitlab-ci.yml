@@ -1,10 +1,22 @@
-image: ruby:2.4.2
+image: tmaier/docker-compose:latest
 
-before_script:
-  - bundle install
+services:
+  - docker:dind
 
-build:
+stages:
+  - test
+  - build
+
+test:
   stage: test
   script:
     - bundle exec rake &
     - bundle exec rake test
+
+build:
+  stage: build
+  script:
+    - docker-compose up --build -d
+    - docker commit $(docker ps -q) devscola/consensus1718:latest
+    - docker login -u $HUB_DOCKER_USER -p $HUB_DOCKER_PSSW
+    - docker push devscola/consensus1718
