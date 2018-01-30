@@ -17,7 +17,7 @@ build:
   services:
     - docker:dind
   script:
-    - docker login registry.gitlab.com
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
     - docker-compose up --build -d
     - docker commit $(docker ps -q) registry.gitlab.com/devscola/consensus-api
     - docker push registry.gitlab.com/devscola/consensus-api
