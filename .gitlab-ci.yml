@@ -1,6 +1,6 @@
 stages:
-  - build
   - test
+  - build
 
 test:
   stage: test
@@ -16,9 +16,9 @@ build:
   image: tmaier/docker-compose:latest
   services:
     - docker:dind
-  script:
+  before_script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+  script:
     - docker-compose up --build -d
     - docker commit $(docker ps -q) registry.gitlab.com/devscola/consensus-api
     - docker push registry.gitlab.com/devscola/consensus-api
-    - docker logout
