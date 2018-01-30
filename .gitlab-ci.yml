@@ -1,21 +1,20 @@
-image: tmaier/docker-compose:latest
-
-services:
-  - docker:dind
-
 stages:
   - test
   - build
 
-test:
+build:
+  image: ruby:2.4.2
   stage: test
+  before_script:
+    - bundle install
   script:
-    - docker-compose up --build -d
-    - docker-compose exec api rake &
-    - docker-compose exec api rake test
-    - docker-compose down
+    - bundle exec rake &
+    - bundle exec rake test
 
 build:
+  image: tmaier/docker-compose:latest
+  services:
+    - docker:dind
   stage: build
   script:
     - docker-compose up --build -d
