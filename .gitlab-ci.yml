@@ -19,5 +19,5 @@ build:
   script:
     - docker-compose up --build -d
     - docker commit $(docker ps -q) devscola/consensus1718:latest
-    - docker login -u (echo $HUB_DOCKER_USER) --password-stdin (echo $HUB_DOCKER_PSSW)
+    - echo $HUB_DOCKER_PSSW | docker login -u $HUB_DOCKER_USER --password-stdin
     - docker push devscola/consensus1718
