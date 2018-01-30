@@ -10,8 +10,9 @@ stages:
 test:
   stage: test
   script:
-    - bundle exec rake &
-    - bundle exec rake test
+    - docker-compose up --build -d
+    - docker-compose exec api rake test
+    - docker-compose down
 
 build:
   stage: build
