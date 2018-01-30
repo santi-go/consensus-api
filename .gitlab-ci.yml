@@ -2,9 +2,9 @@ stages:
   - test
   - build
 
-build:
-  image: ruby:2.4.2
+test:
   stage: test
+  image: ruby:2.4.2
   before_script:
     - bundle install
   script:
@@ -12,10 +12,10 @@ build:
     - bundle exec rake test
 
 build:
+  stage: build
   image: tmaier/docker-compose:latest
   services:
     - docker:dind
-  stage: build
   script:
     - docker-compose up --build -d
     - docker commit $(docker ps -q) devscola/consensus1718:latest
