@@ -11,6 +11,7 @@ test:
   stage: test
   script:
     - docker-compose up --build -d
+    - docker-compose exec api rake &
     - docker-compose exec api rake test
     - docker-compose down
 
