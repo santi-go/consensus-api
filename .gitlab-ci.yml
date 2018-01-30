@@ -19,7 +19,6 @@ build:
   script:
     - docker-compose up --build -d
     - docker commit $(docker ps -q) devscola/consensus1718:latest
-    - cat secrets.txt | docker login --username --password-stdin
-    - rm secrets.txt
+    - docker login -u $(echo $HUB_DOCKER_USER) --password-stdin $(echo $HUB_DOCKER_PSSW)
     - docker push devscola/consensus1718
     - docker logout
