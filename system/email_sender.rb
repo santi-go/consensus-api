@@ -1,3 +1,5 @@
+require 'mail'
+
 class Communication
   Mail.defaults do
     delivery_method :smtp, {

@@ -1,5 +1,4 @@
 require 'liquid'
-require 'mail'
 
 require_relative 'email_sender'
 require_relative 'subject'
