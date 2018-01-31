@@ -1,10 +1,24 @@
-image: ruby:2.4.2
+stages:
+  - test
+  - build
 
-before_script:
-  - bundle install
-
-build:
+test:
   stage: test
+  image: ruby:2.4.2
+  before_script:
+    - bundle install
   script:
     - bundle exec rake &
     - bundle exec rake test
+
+build:
+  stage: build
+  image: tmaier/docker-compose:latest
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+  script:
+    - docker-compose up --build -d
+    - docker commit $(docker ps -q) registry.gitlab.com/devscola/consensus-api
+    - docker push registry.gitlab.com/devscola/consensus-api
