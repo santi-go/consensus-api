@@ -20,6 +20,6 @@ build:
     - rm -rf spec
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
   script:
-    - docker-compose up --build -d
+    - docker-compose -f docker-compose.ci.yml up --build -d
     - docker commit $(docker ps -q) registry.gitlab.com/devscola/consensus-api
     - docker push registry.gitlab.com/devscola/consensus-api

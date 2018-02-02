@@ -6,7 +6,6 @@ services:
       - '.:/api'
     expose:
       - "4567"
-    command: sh -c "bundle install && bundle exec rake"
 
 volumes:
   bundle:

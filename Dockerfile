@@ -3,4 +3,4 @@ FROM ruby:2.4.2
 WORKDIR /api
 COPY . /api
 
-RUN bundle install
+CMD bundle install --without development test
