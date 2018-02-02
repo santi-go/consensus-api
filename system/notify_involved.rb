@@ -1,6 +1,6 @@
 require 'liquid'
 
-require_relative 'email_sender'
+require_relative 'communication'
 require_relative 'subject'
 
 class Notify_involved
