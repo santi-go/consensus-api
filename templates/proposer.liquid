@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>Consensus Proposal for circle</title>
+  <title>Consensus Proposal for proposer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link href="https://fonts.googleapis.com/css?family=Barlow" rel="stylesheet">
 </head>
@@ -224,7 +224,7 @@ font-weight: 400; width:100%">
             </tr>
             <tr>
               <td>
-                Hello {{ proposer }}, this is your proposal:
+                {{ proposer }} would like to know your opinion regarding the following proposal:
               </td>
             </tr>
             <tr>
@@ -234,7 +234,12 @@ font-weight: 400; width:100%">
             </tr>
             <tr>
               <td>
-                This is your circle: {{ involved }}
+                Please read it carefully and give your feedback below
+              </td>
+            </tr>
+            <tr>
+              <td>
+                This is the circle: {{ involved }}
               </td>
             </tr>
           </table>
