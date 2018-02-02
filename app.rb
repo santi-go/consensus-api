@@ -32,11 +32,4 @@ class App < Sinatra::Base
     response.headers["Access-Control-Allow-Origin"] = "*"
     200
   end
-
-  def fake_proposal
-    proposal = {
-      'proposer' => 'proposer@correo.com',
-      'proposal' => 'Lorem ipsum'
-    }
-  end
 end
