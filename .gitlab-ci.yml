@@ -17,6 +17,7 @@ build:
   services:
     - docker:dind
   before_script:
+    - rm -rf spec
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
   script:
     - docker-compose up --build -d
