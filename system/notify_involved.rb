@@ -45,7 +45,11 @@ class Notify_involved
         'domain_link' => body_data[:domain_link]
       )
 
-      consensus_body
+      @body = consensus_body
+    end
+
+    def get_body
+      @body
     end
 
   end
