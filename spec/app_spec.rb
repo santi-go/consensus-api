@@ -5,6 +5,7 @@ require 'rack/test'
 require 'mail'
 
 require_relative '../app.rb'
+require_relative '../system/notify_involved'
 
 
 describe 'Send mail endpoint' do
@@ -118,6 +119,25 @@ describe 'Send mail endpoint' do
       sent_email = Mail::TestMailer.deliveries.first
       involved_in_template = 'raul@nocucha.es, raul@correo.com, pepe@correo.org'
       expect(sent_email.body).to include(involved_in_template)
+    end
+
+    it 'body constructor includes CTA for consensus and disensus' do
+      body_data = {
+        :proposer => 'pepe@correo.org',
+        :consensus_to => ['correo1@domain.es', 'correo2@domain.es', 'pepe@correo.org'],
+        :proposal => 'Nuestra proposal es muy buena, porque lo decimos',
+        :domain_link => 'http://localhost:8080/proposal',
+        :id_proposal => 'proposal_identification',
+        :recipient => 'correo1@domain.es'
+      }
+
+      consensus_link = '/' + body_data[:id_proposal] + '/' + body_data[:recipient] + '/consensus/'
+      disensus_link =  '/' + body_data[:id_proposal] + '/' + body_data[:recipient] + '/disensus/'
+
+      body_content = Notify_involved.body_constructor(body_data)
+
+      expect(body_content).to include(body_data[:domain_link] + consensus_link)
+      expect(body_content).to include(body_data[:domain_link] + disensus_link)
     end
   end
 end
