@@ -12,7 +12,6 @@ class Notify_involved
 
       communication = Communication.new
       consensus_to.each do |recipient|
-
         body_data = {
           :proposer => proposer,
           :consensus_to => consensus_to,
@@ -21,7 +20,6 @@ class Notify_involved
           :id_proposal => id_proposal,
           :recipient => recipient
         }
-
         consensus_body = body_constructor(body_data)
         communication.send_mail(consensus_email, consensus_to, consensus_subject, consensus_body, body_data[:recipient])
       end
@@ -35,7 +33,6 @@ class Notify_involved
     def body_constructor(body_data)
       template = Liquid::Template.parse(File.read("./templates/proposer_email.liquid"))
       consensus_to_beautified = body_data[:consensus_to].to_s.gsub(/[\"\[\]]/,"")
-
       consensus_body = template.render(
         'proposer' => body_data[:proposer],
         'involved' => consensus_to_beautified,
@@ -44,13 +41,11 @@ class Notify_involved
         'recipient' => body_data[:recipient],
         'domain_link' => body_data[:domain_link]
       )
-
       @body = consensus_body
     end
 
     def get_body
       @body
     end
-
   end
 end
