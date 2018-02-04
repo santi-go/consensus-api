@@ -2,5 +2,5 @@ version: '2'
 services:
   api:
     build: .
-    expose:
-      - "4567"
+    ports:
+      - '4567:4567'
