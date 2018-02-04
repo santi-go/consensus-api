@@ -2,11 +2,5 @@ version: '2'
 services:
   api:
     build: .
-    volumes:
-      - '.:/api'
     expose:
       - "4567"
-
-volumes:
-  bundle:
-    driver: local
