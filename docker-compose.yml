@@ -4,8 +4,8 @@ services:
     build: .
     volumes:
       - '.:/api'
-    expose:
-      - "4567"
+    ports:
+      - '4567:4567'
     command: sh -c "bundle install && bundle exec rake"
 
 volumes:
