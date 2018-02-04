@@ -6,7 +6,7 @@ services:
       - '.:/api'
     ports:
       - '4567:4567'
-    command: sh -c "bundle install && bundle exec rake"
+    command: bundle exec rake
 
 volumes:
   bundle:
