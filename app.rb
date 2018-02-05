@@ -22,7 +22,6 @@ class App < Sinatra::Base
     proposal = params['proposal']
     domain_link = 'http://localhost:8080/proposal'
     id_proposal = 'proposal_identification'
-
     Notify_involved.do(proposer, involved, proposal, domain_link, id_proposal)
 
   end
@@ -32,12 +31,5 @@ class App < Sinatra::Base
     response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type, Accept, X-User-Email, X-Auth-Token"
     response.headers["Access-Control-Allow-Origin"] = "*"
     200
-  end
-
-  def fake_proposal
-    proposal = {
-      'proposer' => 'proposer@correo.com',
-      'proposal' => 'Lorem ipsum'
-    }
   end
 end
