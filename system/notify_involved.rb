@@ -1,19 +1,28 @@
 require 'liquid'
 
-require_relative 'email_sender'
+require_relative 'communication'
 require_relative 'subject'
 
 class Notify_involved
   class << self
-    def do(involved, proposal, proposer)
+    def do(proposer, involved, proposal, domain_link, id_proposal)
+      communication = Communication.new
       consensus_to = to_notify(involved, proposer)
       consensus_subject = Subject.create(proposal)
-      involved_body = template_for_involved(consensus_to, proposer, proposal)
-      proposer_body = template_for_proposer(consensus_to, proposer, proposal)
-
-      communication = Communication.new
       consensus_email = 'consensus@devscola.org'
-      communication.send_mail(consensus_email, consensus_to, consensus_subject, involved_body, proposer, proposer_body)
+      consensus_to.each do |mail_to|
+        body_data = {
+          :proposer => proposer,
+          :consensus_to => consensus_to,
+          :proposal => proposal,
+          :domain_link => domain_link,
+          :id_proposal => id_proposal,
+          :recipient => mail_to
+          }
+        template = select_template(mail_to, proposer)
+        consensus_body = body_constructor(body_data, template)
+        communication.send_mail(consensus_email, mail_to, consensus_subject, consensus_body)
+      end
     end
 
     def to_notify(involved, proposer)
@@ -21,24 +30,24 @@ class Notify_involved
       involved.uniq
     end
 
-    def template_for_involved(consensus_to, proposer, proposal)
-      consensus_to_beautified = consensus_to.to_s.gsub(/[\"\[\]]/,"")
-      template = Liquid::Template.parse(File.read("./templates/proposer_email.liquid"))
-      consensus_body = template.render(
-        'proposer' => proposer,
-        'involved' => consensus_to_beautified,
-        'proposal' => proposal
-      )
+    def select_template(recipient, proposer)
+      if recipient == proposer
+        Liquid::Template.parse(File.read("./templates/proposer.liquid"))
+      else
+        Liquid::Template.parse(File.read("./templates/involved.liquid"))
+      end
     end
 
-    def template_for_proposer(consensus_to, proposer, proposal)
-      consensus_to_beautified = consensus_to.to_s.gsub(/[\"\[\]]/,"")
-      template = Liquid::Template.parse(File.read("./templates/proposer.liquid"))
+    def body_constructor(body_data, template)
+      consensus_to_beautified = body_data[:consensus_to].to_s.gsub(/[\"\[\]]/,"")
       consensus_body = template.render(
-        'proposer' => proposer,
+        'proposer' => body_data[:proposer],
         'involved' => consensus_to_beautified,
-        'proposal' => proposal
-      )
+        'id_proposal' => body_data[:id_proposal],
+        'proposal' => body_data[:proposal],
+        'recipient' => body_data[:recipient],
+        'domain_link' => body_data[:domain_link]
+        )
     end
   end
 end

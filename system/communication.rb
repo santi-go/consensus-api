@@ -11,19 +11,13 @@ class Communication
     }
   end
 
-  def send_mail(from, list_to, subject, involved_body, proposer, proposer_body)
-    list_to.each do |email|
+  def send_mail(from, mail_to, subject, body)
       mail = Mail.new
       mail.from = from
       mail.subject = subject
       mail.content_type = 'text/html; charset=UTF-8'
-      if (email == proposer)
-        mail.body = proposer_body
-      else
-        mail.body = involved_body
-      end
-      mail.to = email
+      mail.body = body
+      mail.to = mail_to
       mail.deliver!
-    end
   end
 end

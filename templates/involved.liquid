@@ -224,7 +224,7 @@ font-weight: 400; width:100%">
             </tr>
             <tr>
               <td>
-                Hello {{ proposer }}, this is your proposal:
+                Hello, {{ proposer }} has invited you to participate:
               </td>
             </tr>
             <tr>
@@ -236,6 +236,10 @@ font-weight: 400; width:100%">
               <td>
                 This is your circle: {{ involved }}
               </td>
+            </tr>
+            <tr>
+              <td><a href="{{ domain_link }}/{{ id_proposal }}/{{ recipient }}/consensus/">Consensus</a></td>
+              <td><a href="{{ domain_link }}/{{ id_proposal }}/{{ recipient }}/disensus/">Disensus</a></td>
             </tr>
           </table>
         </td>

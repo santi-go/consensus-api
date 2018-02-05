@@ -5,7 +5,8 @@ require 'rack/test'
 require 'mail'
 
 require_relative '../app.rb'
-
+require_relative '../system/notify_involved'
+require_relative 'test_support/fixture'
 
 describe 'Send mail endpoint' do
 
@@ -31,6 +32,7 @@ describe 'Send mail endpoint' do
                   'proposal': 'A proposal'}
 
     post '/create-proposal', body.to_json
+
     expect(last_response).to be_ok
   end
 
@@ -59,7 +61,6 @@ describe 'Send mail endpoint' do
     expect(sent_email.deliveries[2].to).to eq(['raul@correo.com'])
 
     expect(sent_email.deliveries.length).to eq(3)
-
   end
 
   it 'uses both the involved and the proposer as To with independent deliveries' do
@@ -84,6 +85,7 @@ describe 'Send mail endpoint' do
 
     post '/create-proposal', body.to_json
     sent_email = Mail::TestMailer.deliveries.first
+
     expect(sent_email.body).to include('Nuestra proposal es muy buena, porque lo decimos')
   end
 
@@ -94,6 +96,7 @@ describe 'Send mail endpoint' do
 
     post '/create-proposal', body.to_json
     sent_email = Mail::TestMailer.deliveries.first
+
     expect(sent_email.subject).to eq('Nuestra proposal es muy buena, porque...')
   end
 
@@ -106,12 +109,13 @@ describe 'Send mail endpoint' do
         post '/create-proposal', body.to_json
         sent_email = Mail::TestMailer.deliveries.first
         involved_in_template = 'raul@nocucha.es, raul@correo.com'
+
         expect(sent_email.body).to include(involved_in_template)
     end
 
     it 'different for proposer' do
         body = { 'proposer': 'pepe@correo.org',
-                      'circle': ['gato@correo.org', 'raul@nocucha.es'],
+                      'circle': ['gato@correo.org', 'pepe@correo.org', 'raul@nocucha.es'],
                       'proposal': 'Nuestra proposal es muy buena, porque lo decimos'}
 
         post '/create-proposal', body.to_json
@@ -125,6 +129,26 @@ describe 'Send mail endpoint' do
         expect(first_delivery).to include('Consensus Proposal for proposer')
         expect(second_delivery).to include('Consensus Proposal for circle')
         expect(second_delivery).to include('Consensus Proposal for circle')
+    end
+
+    it 'for involved that includes CTA for consensus and disensus' do
+      template = Fixture::TEMPLATE_INVOLVED
+      body_data = {
+        :proposer => 'pepe@correo.org',
+        :consensus_to => ['correo1@domain.es', 'correo2@domain.es', 'pepe@correo.org'],
+        :proposal => 'Nuestra proposal es muy buena, porque lo decimos',
+        :domain_link => 'http://localhost:8080/proposal',
+        :id_proposal => 'proposal_identification',
+        :recipient => 'correo1@domain.es'
+      }
+
+      consensus_link = '/' + body_data[:id_proposal] + '/' + body_data[:recipient] + '/consensus/'
+      disensus_link =  '/' + body_data[:id_proposal] + '/' + body_data[:recipient] + '/disensus/'
+
+      body_content = Notify_involved.body_constructor(body_data, template)
+
+      expect(body_content).to include(body_data[:domain_link] + consensus_link)
+      expect(body_content).to include(body_data[:domain_link] + disensus_link)
     end
   end
 end
