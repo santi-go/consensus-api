@@ -31,4 +31,21 @@ class App < Sinatra::Base
     response.headers["Access-Control-Allow-Origin"] = "*"
     200
   end
+
+  post '/vote-consensus' do
+    params = JSON.parse(request.body.read)
+    email = params['email']
+    vote = params['vote']
+    id_proposal = params['id_proposal']
+    generate_json = {
+      :user => email,
+      :proposer => 'proposer@mail.com',
+      :vote => vote,
+      :total_consensus => 3,
+      :total_disensus => 2,
+      :proposal_text => 'Lorem ipsum'
+    }.to_json
+    generate_json
+  end
+
 end
