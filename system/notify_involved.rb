@@ -47,7 +47,12 @@ class Notify_involved
         'proposal' => body_data[:proposal],
         'recipient' => body_data[:recipient],
         'domain_link' => body_data[:domain_link]
-        )
+      )
+      @body = consensus_body
+    end
+
+    def get_body
+      @body
     end
   end
 end
