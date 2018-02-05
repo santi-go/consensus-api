@@ -11,14 +11,13 @@ class Communication
     }
   end
 
-  def send_mail(from, list_to, subject, body, recipient)
+  def send_mail(from, mail_to, subject, body)
       mail = Mail.new
       mail.from = from
       mail.subject = subject
       mail.content_type = 'text/html; charset=UTF-8'
       mail.body = body
-
-      mail.to = recipient
+      mail.to = mail_to
       mail.deliver!
   end
 end
