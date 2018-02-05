@@ -23,6 +23,7 @@ class App < Sinatra::Base
     domain_link = 'http://localhost:8080/proposal'
     id_proposal = 'proposal_identification'
     Notify_involved.do(proposer, involved, proposal, domain_link, id_proposal)
+
   end
 
   options "*" do
