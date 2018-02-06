@@ -142,8 +142,8 @@ describe 'Send mail endpoint' do
         :recipient => 'correo1@domain.es'
       }
 
-      consensus_link = body_data[:domain_link] + "id=" + body_data[:id_proposal] + "&user=" + body_data[:recipient] + '&vote=consensus/'
-      disensus_link =  body_data[:domain_link] + "id=" + body_data[:id_proposal] + "&user=" + body_data[:recipient] + '&vote=disensus/'
+      consensus_link = body_data[:domain_link] + "id=" + body_data[:id_proposal] + "&user=" + body_data[:recipient] + '&vote=consensus'
+      disensus_link =  body_data[:domain_link] + "id=" + body_data[:id_proposal] + "&user=" + body_data[:recipient] + '&vote=disensus'
 
       Notify_involved.body_constructor(body_data, template)
       body_content = Notify_involved.get_body
