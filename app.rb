@@ -35,11 +35,11 @@ class App < Sinatra::Base
 
   post '/vote-consensus' do
     params = JSON.parse(request.body.read)
-    email = params['email']
+    user = params['user']
     vote = params['vote']
     id_proposal = params['id_proposal']
     generate_json = {
-      :user => email,
+      :user => user,
       :proposer => 'proposer@mail.com',
       :vote => vote,
       :total_consensus => 3,

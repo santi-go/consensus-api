@@ -152,7 +152,7 @@ describe 'Send mail endpoint' do
     end
     it 'api send a json' do
       body = {
-        :email => 'pepe@correo.org',
+        :user => 'pepe@correo.org',
         :vote => 'disensus',
         :id_proposal => '1'
       }
