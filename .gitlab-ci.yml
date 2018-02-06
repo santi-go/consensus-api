@@ -22,4 +22,4 @@ build:
   script:
     - docker-compose -f docker-compose_ci.yml up --build -d
     - docker commit $(docker ps -q) registry.gitlab.com/devscola/consensus-api:v.01
-    - docker push registry.gitlab.com/devscola/consensus-api:v0.1
+    - docker push registry.gitlab.com/devscola/consensus-api:v0.1 
