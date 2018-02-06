@@ -20,7 +20,7 @@ class App < Sinatra::Base
     proposer = params['proposer']
     involved = params['circle']
     proposal = params['proposal']
-    domain_link = 'http://localhost:8080/proposal'
+    domain_link = 'http://localhost:8080/reunion-consensus.html?'
     id_proposal = 'proposal_identification'
     Notify_involved.do(proposer, involved, proposal, domain_link, id_proposal)
 
