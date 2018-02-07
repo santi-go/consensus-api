@@ -3,11 +3,11 @@ require 'liquid'
 require_relative 'communication'
 require_relative 'subject'
 
-class Notify_involved
+class Notify
   class << self
     def do(proposer, involved, proposal, domain_link, id_proposal)
       communication = Communication.new
-      consensus_to = to_notify(involved, proposer)
+      consensus_to = circle(involved, proposer)
       consensus_subject = Subject.create(proposal)
       consensus_email = 'consensus@devscola.org'
       consensus_to.each do |mail_to|
@@ -25,7 +25,7 @@ class Notify_involved
       end
     end
 
-    def to_notify(involved, proposer)
+    def circle(involved, proposer)
       involved.unshift(proposer)
       involved.uniq
     end

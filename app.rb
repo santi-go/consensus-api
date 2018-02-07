@@ -3,7 +3,7 @@ require 'sinatra/base'
 require 'sinatra/cross_origin'
 require 'json'
 
-require_relative './system/notify_involved'
+require_relative './system/notify'
 
 class App < Sinatra::Base
 
@@ -22,7 +22,7 @@ class App < Sinatra::Base
     proposal = params['proposal']
     domain_link = 'http://localhost:8080/reunion-consensus.html?'
     id_proposal = 'proposal_identification'
-    Notify_involved.do(proposer, involved, proposal, domain_link, id_proposal)
+    Notify.do(proposer, involved, proposal, domain_link, id_proposal)
 
   end
 

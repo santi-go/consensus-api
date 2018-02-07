@@ -5,7 +5,7 @@ require 'rack/test'
 require 'mail'
 
 require_relative '../app.rb'
-require_relative '../system/notify_involved'
+require_relative '../system/notify'
 require_relative 'test_support/fixture'
 
 describe 'Send mail endpoint' do
@@ -145,8 +145,8 @@ describe 'Send mail endpoint' do
       consensus_link = body_data[:domain_link] + "id=" + body_data[:id_proposal] + "&user=" + body_data[:recipient] + '&vote=consensus'
       disensus_link =  body_data[:domain_link] + "id=" + body_data[:id_proposal] + "&user=" + body_data[:recipient] + '&vote=disensus'
 
-      Notify_involved.body_constructor(body_data, template)
-      body_content = Notify_involved.get_body
+      Notify.body_constructor(body_data, template)
+      body_content = Notify.get_body
       expect(body_content).to include(consensus_link)
       expect(body_content).to include(disensus_link)
     end
@@ -158,7 +158,7 @@ describe 'Send mail endpoint' do
       }
       post '/vote-consensus', body.to_json
       have_expected_keys
-      
+
     end
   end
   def have_expected_keys
