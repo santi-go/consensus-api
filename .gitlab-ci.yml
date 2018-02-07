@@ -1,3 +1,8 @@
+variables:
+  PROJECT_GROUP: devscola
+  PROJECT_IMAGE_NAME: consensus-api
+  TAG: v0.2
+
 stages:
   - test
   - build
@@ -21,5 +26,5 @@ build:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
   script:
     - docker-compose -f docker-compose_ci.yml up --build -d
-    - docker commit $(docker ps -q) registry.gitlab.com/devscola/consensus-api:v0.2
-    - docker push registry.gitlab.com/devscola/consensus-api:v0.2
+    - docker commit $(docker ps -q) registry.gitlab.com/$PROJECT_GROUP/$PROJECT_IMAGE_NAME:$TAG
+    - docker push registry.gitlab.com/$PROJECT_GROUP/$PROJECT_IMAGE_NAME:$TAG
