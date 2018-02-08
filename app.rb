@@ -5,6 +5,7 @@ require 'json'
 
 require_relative './system/notify'
 require_relative './system/proposal'
+require_relative 'initializers/configure_mail_gem'
 
 class App < Sinatra::Base
 
@@ -44,7 +45,7 @@ class App < Sinatra::Base
     array_params = []
     array.each {|element| array_params << element.split('=')}
     hash = array_params.to_h
-    
+
     user = hash['user']
     vote = hash['vote']
     id_proposal = hash['id_proposal']
@@ -60,6 +61,4 @@ class App < Sinatra::Base
     generated_json
 
   end
-  
 end
-
