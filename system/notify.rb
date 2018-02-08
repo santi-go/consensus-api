@@ -32,8 +32,7 @@ class Notify
     end
 
     def body_constructor(new_proposal, mail_to, template)
-      circle = circle(new_proposal.involved, new_proposal.proposer)
-      circle_beautified = beautify_list(circle)
+      circle_beautified = beautify_list(circle(new_proposal.involved, new_proposal.proposer))
       consensus_body = template.render(
         'proposer' => new_proposal.proposer,
         'involved' => circle_beautified,
