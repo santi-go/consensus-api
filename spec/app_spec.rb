@@ -7,6 +7,7 @@ require 'mail'
 require_relative '../app.rb'
 require_relative '../system/notify'
 require_relative 'test_support/fixture'
+require_relative '../system/proposal'
 
 describe 'Send mail endpoint' do
 
@@ -133,34 +134,44 @@ describe 'Send mail endpoint' do
 
     it 'for involved that includes CTA for consensus and disensus' do
       template = Fixture::TEMPLATE_INVOLVED
-      body_data = {
-        :proposer => 'pepe@correo.org',
-        :consensus_to => ['correo1@domain.es', 'correo2@domain.es', 'pepe@correo.org'],
-        :proposal => 'Nuestra proposal es muy buena, porque lo decimos',
-        :domain_link => 'http://localhost:8080/proposal',
-        :id_proposal => 'proposal_identification',
-        :recipient => 'correo1@domain.es'
-      }
+      recipient = Fixture::RECIPIENT
+      proposal = Proposal.new(Fixture::ID_PROPOSAL, Fixture::PROPOSER, Fixture::CIRCLE, Fixture::PROPOSAL, Fixture::DOMAIN_LINK, Fixture::CONSENSUS_EMAIL )
 
-      consensus_link = body_data[:domain_link] + "id=" + body_data[:id_proposal] + "&user=" + body_data[:recipient] + '&vote=consensus'
-      disensus_link =  body_data[:domain_link] + "id=" + body_data[:id_proposal] + "&user=" + body_data[:recipient] + '&vote=disensus'
+      consensus_link = proposal.domain_link + "id=" + proposal.id_proposal + "&user=" + recipient + '&vote=consensus'
+      disensus_link =  proposal.domain_link + "id=" + proposal.id_proposal + "&user=" + recipient + '&vote=disensus'
 
-      Notify.body_constructor(body_data, template)
+      Notify.body_constructor(proposal, recipient, template)
       body_content = Notify.get_body
       expect(body_content).to include(consensus_link)
       expect(body_content).to include(disensus_link)
     end
+<<<<<<< HEAD
   end
     it 'send a json' do
       body_sended = {
        token: 'id=1&user=pepe@correo.es&vote=disensus'
+=======
+
+    it 'api send a json' do
+      body = {
+        :user => 'pepe@correo.org',
+        :vote => 'disensus',
+        :id_proposal => '1'
+>>>>>>> 8975546b2ddab181b8694378034a4ee16f05981c
       }
       post '/vote-consensus', body_sended.to_json
       have_expected_keys
     end
+<<<<<<< HEAD
     
     def have_expected_keys
       parsed = JSON.parse(last_response.body)
+=======
+  end
+
+  def have_expected_keys
+    parsed = JSON.parse(last_response.body)
+>>>>>>> 8975546b2ddab181b8694378034a4ee16f05981c
       expect(parsed).to have_key("user")
       expect(parsed).to have_key("proposer")
       expect(parsed).to have_key("vote")

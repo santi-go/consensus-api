@@ -4,6 +4,7 @@ require 'sinatra/cross_origin'
 require 'json'
 
 require_relative './system/notify'
+require_relative './system/proposal'
 
 class App < Sinatra::Base
 
@@ -17,13 +18,16 @@ class App < Sinatra::Base
 
   post '/create-proposal' do
     params = JSON.parse(request.body.read)
-    proposer = params['proposer']
-    involved = params['circle']
-    proposal = params['proposal']
-    domain_link = 'http://localhost:8080/reunion-consensus.html?'
     id_proposal = 'proposal_identification'
-    Notify.do(proposer, involved, proposal, domain_link, id_proposal)
 
+    domain = 'http://localhost:8080/'
+    link = 'reunion-consensus.html?'
+    domain_link = domain + link
+    consensus_email = 'consensus@devscola.org'
+
+    proposal = Proposal.new(id_proposal, params['proposer'], params['circle'], params['proposal'], domain_link, consensus_email)
+
+    Notify.do(proposal)
   end
 
   options "*" do
