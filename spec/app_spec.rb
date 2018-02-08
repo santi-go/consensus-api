@@ -150,24 +150,22 @@ describe 'Send mail endpoint' do
       expect(body_content).to include(consensus_link)
       expect(body_content).to include(disensus_link)
     end
-    it 'api send a json' do
-      body = {
-        :user => 'pepe@correo.org',
-        :vote => 'disensus',
-        :id_proposal => '1'
-      }
-      post '/vote-consensus', body.to_json
-      have_expected_keys
-
-    end
   end
-  def have_expected_keys
-    parsed = JSON.parse(last_response.body)
+    it 'send a json' do
+      body_sended = {
+       token: 'id=1&user=pepe@correo.es&vote=disensus'
+      }
+      post '/vote-consensus', body_sended.to_json
+      have_expected_keys
+    end
+    
+    def have_expected_keys
+      parsed = JSON.parse(last_response.body)
       expect(parsed).to have_key("user")
       expect(parsed).to have_key("proposer")
       expect(parsed).to have_key("vote")
       expect(parsed).to have_key("total_consensus")
       expect(parsed).to have_key("total_disensus")
       expect(parsed).to have_key("proposal_text")
-  end
+    end
 end

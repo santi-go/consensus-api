@@ -35,10 +35,17 @@ class App < Sinatra::Base
 
   post '/vote-consensus' do
     params = JSON.parse(request.body.read)
-    user = params['user']
-    vote = params['vote']
-    id_proposal = params['id_proposal']
-    generate_json = {
+    token = params['token']
+    array = token.split('&')
+    array_params = []
+    array.each {|element| array_params << element.split('=')}
+    hash = array_params.to_h
+    
+    user = hash['user']
+    vote = hash['vote']
+    id_proposal = hash['id_proposal']
+
+    generated_json = {
       :user => user,
       :proposer => 'proposer@mail.com',
       :vote => vote,
@@ -46,7 +53,9 @@ class App < Sinatra::Base
       :total_disensus => 2,
       :proposal_text => 'Lorem ipsum'
     }.to_json
-    generate_json
-  end
+    generated_json
 
+  end
+  
 end
+
