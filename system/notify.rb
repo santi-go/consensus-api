@@ -5,23 +5,16 @@ require_relative 'subject'
 
 class Notify
   class << self
-    def do(proposer, involved, proposal, domain_link, id_proposal)
+    def do(new_proposal)
       communication = Communication.new
-      consensus_to = circle(involved, proposer)
-      consensus_subject = Subject.create(proposal)
-      consensus_email = 'consensus@devscola.org'
+
+      consensus_to = circle(new_proposal.involved, new_proposal.proposer)
+      consensus_subject = Subject.create(new_proposal.proposal)
+
       consensus_to.each do |mail_to|
-        body_data = {
-          :proposer => proposer,
-          :consensus_to => consensus_to,
-          :proposal => proposal,
-          :domain_link => domain_link,
-          :id_proposal => id_proposal,
-          :recipient => mail_to
-          }
-        template = select_template(mail_to, proposer)
-        consensus_body = body_constructor(body_data, template)
-        communication.send_mail(consensus_email, mail_to, consensus_subject, consensus_body)
+        template = select_template(mail_to, new_proposal.proposer)
+        consensus_body = body_constructor(new_proposal, mail_to, template)
+        communication.send_mail(new_proposal.consensus_email, mail_to, consensus_subject, consensus_body)
       end
     end
 
@@ -38,17 +31,22 @@ class Notify
       end
     end
 
-    def body_constructor(body_data, template)
-      consensus_to_beautified = body_data[:consensus_to].to_s.gsub(/[\"\[\]]/,"")
+    def body_constructor(new_proposal, mail_to, template)
+      circle = circle(new_proposal.involved, new_proposal.proposer)
+      circle_beautified = beautify_list(circle)
       consensus_body = template.render(
-        'proposer' => body_data[:proposer],
-        'involved' => consensus_to_beautified,
-        'id_proposal' => body_data[:id_proposal],
-        'proposal' => body_data[:proposal],
-        'recipient' => body_data[:recipient],
-        'domain_link' => body_data[:domain_link]
+        'proposer' => new_proposal.proposer,
+        'involved' => circle_beautified,
+        'id_proposal' => new_proposal.id_proposal,
+        'proposal' => new_proposal.proposal,
+        'recipient' => mail_to,
+        'domain_link' => new_proposal.domain_link
       )
       @body = consensus_body
+    end
+
+    def beautify_list(list)
+      list.to_s.gsub(/[\"\[\]]/,"")
     end
 
     def get_body
