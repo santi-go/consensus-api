@@ -7,6 +7,7 @@ require 'mail'
 require_relative '../app.rb'
 require_relative '../system/notify'
 require_relative 'test_support/fixture'
+require_relative '../system/proposal'
 
 describe 'Send mail endpoint' do
 
@@ -133,19 +134,13 @@ describe 'Send mail endpoint' do
 
     it 'for involved that includes CTA for consensus and disensus' do
       template = Fixture::TEMPLATE_INVOLVED
-      body_data = {
-        :proposer => 'pepe@correo.org',
-        :consensus_to => ['correo1@domain.es', 'correo2@domain.es', 'pepe@correo.org'],
-        :proposal => 'Nuestra proposal es muy buena, porque lo decimos',
-        :domain_link => 'http://localhost:8080/proposal',
-        :id_proposal => 'proposal_identification',
-        :recipient => 'correo1@domain.es'
-      }
+      recipient = Fixture::RECIPIENT
+      proposal = Proposal.new(Fixture::ID_PROPOSAL, Fixture::PROPOSER, Fixture::CIRCLE, Fixture::PROPOSAL, Fixture::DOMAIN_LINK, Fixture::CONSENSUS_EMAIL )
 
-      consensus_link = body_data[:domain_link] + "id=" + body_data[:id_proposal] + "&user=" + body_data[:recipient] + '&vote=consensus'
-      disensus_link =  body_data[:domain_link] + "id=" + body_data[:id_proposal] + "&user=" + body_data[:recipient] + '&vote=disensus'
+      consensus_link = proposal.domain_link + "id=" + proposal.id_proposal + "&user=" + recipient + '&vote=consensus'
+      disensus_link =  proposal.domain_link + "id=" + proposal.id_proposal + "&user=" + recipient + '&vote=disensus'
 
-      Notify.body_constructor(body_data, template)
+      Notify.body_constructor(proposal, recipient, template)
       body_content = Notify.get_body
       expect(body_content).to include(consensus_link)
       expect(body_content).to include(disensus_link)
