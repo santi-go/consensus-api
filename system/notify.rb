@@ -6,15 +6,13 @@ require_relative 'subject'
 class Notify
   class << self
     def do(new_proposal)
-      communication = Communication.new
-
       consensus_to = circle(new_proposal.involved, new_proposal.proposer)
       consensus_subject = Subject.create(new_proposal.proposal)
 
       consensus_to.each do |mail_to|
         template = select_template(mail_to, new_proposal.proposer)
         consensus_body = body_constructor(new_proposal, mail_to, template)
-        communication.send_mail(new_proposal.consensus_email, mail_to, consensus_subject, consensus_body)
+        Communication.deliver(new_proposal.consensus_email, mail_to, consensus_subject, consensus_body)
       end
     end
 
