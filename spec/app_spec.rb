@@ -145,6 +145,7 @@ describe 'Send mail endpoint' do
       expect(body_content).to include(consensus_link)
       expect(body_content).to include(disensus_link)
     end
+
   end
     it 'send a json' do
       body_sended = {
@@ -153,7 +154,7 @@ describe 'Send mail endpoint' do
       post '/vote-consensus', body_sended.to_json
       have_expected_keys
     end
-    
+
     def have_expected_keys
       parsed = JSON.parse(last_response.body)
       expect(parsed).to have_key("user")
