@@ -23,9 +23,9 @@ describe 'Send mail endpoint' do
 
   it 'accepts a json with required parameters' do
     body = {
-            'proposer' => 'proposer@proposer.es',
-            'circle' => ['involved@involved.es'],
-            'proposal' => 'some_proposal'
+            'proposer': 'proposer@proposer.es',
+            'circle': ['involved@involved.es'],
+            'proposal': 'some_proposal'
     }
 
     post '/create-proposal', body.to_json
@@ -35,21 +35,21 @@ describe 'Send mail endpoint' do
 
   it ' does not accept a json without the required parameters' do
     body = {
-            'circle' => ['involved@involved.es'],
-            'proposal' => 'some_proposal'
+            'circle': ['involved@involved.es'],
+            'proposal': 'some_proposal'
     }
 
     post '/create-proposal', body.to_json
-    p last_response
+
     expect(last_response.status).to be(422)
   end
 
   it 'uses the consensus default email as sender email' do
     stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
     request_body = {
-                  'proposer' => 'test@swag.com',
-                  'circle' => ['yolo@swag.com'],
-                  'proposal' => 'some_proposal'
+                  'proposer': 'test@swag.com',
+                  'circle': ['yolo@swag.com'],
+                  'proposal': 'some_proposal'
     }
 
     post '/create-proposal', request_body.to_json
@@ -60,9 +60,9 @@ describe 'Send mail endpoint' do
   it 'ignores repeated recipients' do
     stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
     request_body_with_repeated_mails = {
-              'proposer' => 'some@zzz.com',
-              'circle' => ['yolo@swag.com', 'yolo@swag.com', 'some@zzz.com'],
-              'proposal' => 'some_proposal'
+              'proposer': 'some@zzz.com',
+              'circle': ['yolo@swag.com', 'yolo@swag.com', 'some@zzz.com'],
+              'proposal': 'some_proposal'
     }
 
     post '/create-proposal', request_body_with_repeated_mails.to_json
@@ -74,9 +74,9 @@ describe 'Send mail endpoint' do
   it 'sends mails to everybody involved' do
     stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
     request_body = {
-              'proposer' => 'some@zzz.com',
-              'circle' => ['yolo@swag.com', 'bbq@wtf.com'],
-              'proposal' => 'some_proposal'
+              'proposer': 'some@zzz.com',
+              'circle': ['yolo@swag.com', 'bbq@wtf.com'],
+              'proposal': 'some_proposal'
     }
 
     post '/create-proposal', request_body.to_json
@@ -87,9 +87,9 @@ describe 'Send mail endpoint' do
   it 'uses proposal as Body' do
     stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
     request_body = {
-              'proposer' => 'some@zzz.com',
-              'circle' => ['yolo@swag.com', 'bbq@wtf.com'],
-              'proposal' => 'some_proposal'
+              'proposer': 'some@zzz.com',
+              'circle': ['yolo@swag.com', 'bbq@wtf.com'],
+              'proposal': 'some_proposal'
     }
 
     post '/create-proposal', request_body.to_json

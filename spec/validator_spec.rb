@@ -5,9 +5,9 @@ require_relative '../system/json_validator.rb'
 describe 'JSON validator' do
 
   it 'checks that all required fields to create proposal are present' do
-    body = {      'proposer': 'consensus@consensus.com',
-                  'circle': ['involved@involved.es'],
-                  'proposal': 'A proposal'}
+    body = {  'proposer': 'some@zzz.com',
+              'circle': ['yolo@swag.com', 'bbq@wtf.com'],
+              'proposal': 'some_proposal'}
 
     expect(JSONValidator.validate_create_proposal?(body)).to eq(true)
   end
