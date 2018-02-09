@@ -28,7 +28,7 @@ class App < Sinatra::Base
     consensus_email = 'consensus@devscola.org'
     proposal = Proposal.new(id_proposal, params['proposer'], params['circle'], params['proposal'], domain_link, consensus_email)
 
-    if JSONValidator.validate_create_proposal?(params)
+    if (JSONValidator.validate_create_proposal?(params))
       Notify.do(proposal)
     else
       status 422

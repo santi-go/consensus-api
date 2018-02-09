@@ -13,7 +13,7 @@ class JSONValidator
     end
 
     def has_fields_to_create_proposal(data)
-      if (data.has_key?(:proposer) && data.has_key?(:circle) && data.has_key?(:proposal))
+      if (data.has_key?('proposer') && data.has_key?('circle') && data.has_key?('proposal'))
         return true
       else
         return false
@@ -21,7 +21,7 @@ class JSONValidator
     end
 
     def complete_fields_for_create_proposal?(data)
-      return false if (data[:proposer] == '' || data[:circle] == [] || data[:proposal] == '')
+      return false if (data['proposer'] == '' || data['circle'] == [] || data['proposal'] == '')
       true
     end
   end
