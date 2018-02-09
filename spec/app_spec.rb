@@ -33,6 +33,17 @@ describe 'Send mail endpoint' do
     expect(last_response).to be_ok
   end
 
+  it ' does not accept a json without the required parameters' do
+    body = {
+            'circle' => ['involved@involved.es'],
+            'proposal' => 'some_proposal'
+    }
+
+    post '/create-proposal', body.to_json
+    p last_response
+    expect(last_response.status).to be(422)
+  end
+
   it 'uses the consensus default email as sender email' do
     stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
     request_body = {

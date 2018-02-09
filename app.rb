@@ -5,6 +5,7 @@ require 'json'
 
 require_relative './system/notify'
 require_relative './system/proposal'
+require_relative './system/json_validator'
 require_relative 'initializers/configure_mail_gem'
 
 class App < Sinatra::Base
@@ -25,8 +26,8 @@ class App < Sinatra::Base
     link = 'reunion-consensus.html?'
     domain_link = domain + link
     consensus_email = 'consensus@devscola.org'
-
     proposal = Proposal.new(id_proposal, params['proposer'], params['circle'], params['proposal'], domain_link, consensus_email)
+    status 422 if JSONValidator.validate_create_proposal?(params)
 
     Notify.do(proposal)
   end
