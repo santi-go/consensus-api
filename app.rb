@@ -60,9 +60,9 @@ class App < Sinatra::Base
       :vote => vote,
       :total_consensus => 3,
       :total_disensus => 2,
-      :proposal_text => 'Lorem ipsum'
+      :proposal_text => 'Lorem ipsum',
+      :id_proposal => id_proposal
     }.to_json
     generated_json
-
   end
 end
