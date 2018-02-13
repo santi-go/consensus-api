@@ -40,15 +40,15 @@ font-weight: 400; width:100%; line-height:1.4em; text-align:center">
             <tr>
               <td>
                 <h2 style="margin-top: 2em; font-size:1.3em">This is the circle votation:</h2>
-                <p style="display: inline; margin: 1em 2em">There are <span style="font-size: 1.5rem; font-weight: 900; padding: 0 0.25rem; margin: 0 0.25rem; color: #07889B; border: 1px solid #07889B;">90</span> people in consensus</p>
-                <p style="display: inline; margin: 1em 2em">There are <span style="font-size: 1.5rem; font-weight: 900; padding: 0 0.25rem; margin: 0 0.25rem; color: #FC4A1A; border: 1px solid #FC4A1A;">90</span> people in disensus</p>
+                <p style="display: inline; margin: 1em 2em">There are <span style="font-size: 1.5rem; font-weight: 900; padding: 0 0.25rem; margin: 0 0.25rem; color: #07889B; border: 1px solid #07889B;">{{ total_consensus }}</span> people in consensus</p>
+                <p style="display: inline; margin: 1em 2em">There are <span style="font-size: 1.5rem; font-weight: 900; padding: 0 0.25rem; margin: 0 0.25rem; color: #FC4A1A; border: 1px solid #FC4A1A;">{{ total_disensus }}</span> people in disensus</p>
                 <br></br>
               </td>
             </tr>
             <tr>
               <td>
                 <p>This is your circle: {{ involved }}</p>
-                <p>The last person who has vote is {{ invited }}</p>
+                <p>The last person who has vote is {{ last_voter }}</p>
               </td>
             </tr>
             <tr>
