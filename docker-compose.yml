@@ -1,13 +1,10 @@
-version: '2'
+version: '3.2'
 services:
   api:
     build: .
     volumes:
-      - '.:/api'
+      - type: bind
+        source: .
+        target: /opt/consensus_api/
     ports:
       - '4567:4567'
-    command: bundle exec rake
-
-volumes:
-  bundle:
-    driver: local

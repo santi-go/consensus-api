@@ -22,6 +22,7 @@ describe 'Send mail endpoint' do
   end
 
   it 'accepts a json with required parameters' do
+    stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
     body = {
             'proposer': 'proposer@proposer.es',
             'circle': ['involved@involved.es'],
@@ -34,6 +35,7 @@ describe 'Send mail endpoint' do
   end
 
   it ' does not accept a json without the required parameters' do
+    stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
     body = {
             'circle': ['involved@involved.es'],
             'proposal': 'some_proposal'

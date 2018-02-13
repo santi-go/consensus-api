@@ -14,7 +14,7 @@ font-weight: 400; width:100%">
       <tr>
         <td align="center" bgcolor="#EFEFEF">
           <div id="logo_consensus" style ="margin:16px">
-            <img alt="Consensus logotype" width="auto" height="164" style="display:block;" src="https://dl.dropboxusercontent.com/s/zumuyhsupldxfed/logo.png?dl=0">
+          <img alt="Consensus logotype" width="auto" height="164" style="display:block;" src="https://dl.dropboxusercontent.com/s/zumuyhsupldxfed/logo.png?dl=0">
           </div>
         </td>
       </tr>
@@ -23,30 +23,43 @@ font-weight: 400; width:100%">
           <table border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
               <td style="font-size:26px;">
-                Welcome to Consensus
+                Hello {{ proposer }}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>You've created a consensus proposal.</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <h2>This is the circle votation:</h2>
+                <p>There are <span style="font-size: 1.5rem; font-weight: 900; padding: 0 0.25rem; margin: 0 0.25rem; color: #07889B; border: 1px solid #07889B;">90</span> people in consensus</p>
+                <p>There are <span style="font-size: 1.5rem; font-weight: 900; padding: 0 0.25rem; margin: 0 0.25rem; color: #FC4A1A; border: 1px solid #FC4A1A;">90</span> people in disensus</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>This is your circle: {{ involved }}</p>
+                <p>The last person who has vote is {{ invited }}</p>
                 <br></br>
               </td>
             </tr>
             <tr>
-              <td>
-                Hello {{ proposer }}, this is your proposal:
+              <td style="display: block">
+                <h2>This is the proposal:</h2>
               </td>
-            </tr>
-            <tr>
-              <td>
-                {{ proposal }}
-              </td>
-            </tr>
-            <tr>
-              <td>
-                This is your circle: {{ involved }}
+              <td bgcolor="#fff" style="border: 1px solid #07889B; display:block; width: 100%; padding: 1em;">
+                <p>
+                  {{ proposal }}
+                </p>
               </td>
             </tr>
           </table>
         </td>
       </tr>
       <tr>
-        <td bgcolor="#07889B" style="padding: 15px 30px 15px 30px; position:absolute; bottom:0; width: 100%">
+        <td bgcolor="#07889B" style="padding: 15px 30px 15px 30px; bottom:0; width: 96%">
           <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-color: transparent;">
             <tr>
               <td width="75%">
