@@ -127,7 +127,7 @@ describe 'Send mail endpoint' do
         expect(total_deliveries).to eq(3)
         expect(first_delivery).to include('Consensus Proposal for proposer')
         expect(second_delivery).to include('Consensus Proposal for circle')
-        expect(second_delivery).to include('Consensus Proposal for circle')
+        expect(third_delivery).to include('Consensus Proposal for circle')
     end
 
     it 'for involved that includes CTA for consensus and disensus' do
