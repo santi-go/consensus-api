@@ -4,9 +4,10 @@ require 'sinatra/cross_origin'
 require 'json'
 
 require_relative './system/notify'
-require_relative './system/proposal'
+require_relative './system/proposals/proposal'
 require_relative './system/json_validator'
 require_relative 'initializers/configure_mail_gem'
+require_relative './system/proposals/repository'
 
 class App < Sinatra::Base
 
@@ -20,13 +21,12 @@ class App < Sinatra::Base
 
   post '/create-proposal' do
     params = JSON.parse(request.body.read)
-    id_proposal = 'proposal_identification'
-
     domain = 'http://localhost:8080/'
     link = 'reunion-consensus.html?'
     domain_link = domain + link
     consensus_email = 'consensus@devscola.org'
-    proposal = Proposal.new(id_proposal, params['proposer'], params['circle'], params['proposal'], domain_link, consensus_email)
+    proposal = Proposal.new(id_proposal=nil, params['proposer'], params['circle'], params['proposal'], domain_link, consensus_email)
+    Proposals::Repository.save(proposal)
 
     if (JSONValidator.validate_create_proposal?(params))
       Notify.do(proposal)
