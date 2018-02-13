@@ -4,7 +4,7 @@ class Proposal
   attr_reader :id_proposal, :proposer, :involved, :proposal, :domain_link, :consensus_email
 
   def initialize(id_proposal, proposer, involved, proposal, domain_link, consensus_email)
-    @id_proposal = create_id(id_proposal)
+    @id_proposal = check_id(id_proposal)
     @proposer = proposer
     @involved = involved
     @proposal = proposal
@@ -12,9 +12,12 @@ class Proposal
     @consensus_email = consensus_email
   end
 
-  def create_id(id_proposal)
-    identify = SecureRandom.uuid
-    identify = id_proposal if !(id_proposal == nil)
-    return identify
+  def check_id(id_proposal)
+    return id_proposal if (id_proposal != nil)
+    create_id
+  end
+
+  def create_id
+    SecureRandom.uuid
   end
 end
