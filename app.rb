@@ -65,4 +65,8 @@ class App < Sinatra::Base
     generated_json
 
   end
+
+  post '/votation-state' do
+    Notify.votation_state
+  end
 end

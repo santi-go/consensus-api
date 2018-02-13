@@ -49,5 +49,21 @@ class Notify
     def get_body
       @body
     end
+
+    def votation_state
+      from = 'consensus@devscola.org'
+      mail_to = 'pepe@correo.org'
+      subject = Subject.create('Lorem Ipsum')
+      template = Liquid::Template.parse(File.read("./templates/proposer-votes.liquid"))
+      body = template.render(
+        'proposer' => mail_to,
+        'involved' => 'helen@gmail.es, zero@gmail.com',
+        'last_voter' => 'zero@gmail.com',
+        'total_consensus' => '90',
+        'total_disensus' => '80',
+        'proposal' => 'Lorem Ipsum'
+        )
+      Communication.deliver(from, mail_to, subject, body)
+    end
   end
 end
