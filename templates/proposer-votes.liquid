@@ -8,91 +8,89 @@
   <link href="https://fonts.googleapis.com/css?family=Barlow|Space+Mono" rel="stylesheet">
 </head>
 <body bgcolor= "#CAEBF2" style="margin: 0; padding: 0; font-family: 'Barlow', sans-serif;
-font-weight: 400; width:100%; line-height:1.4em; text-align:center">
-  <table border="0" cellpadding="0" cellspacing="0" width="100%">
-    <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr>
-        <td bgcolor="#EFEFEF">
-          <div id="logo_consensus">
-            <img alt="Consensus logotype" width="auto" height="80" style="display:block; float: left; margin: 0.5em" src="https://dl.dropboxusercontent.com/s/zumuyhsupldxfed/logo.png?dl=0">
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding: 5% 10%; border-top: 4px double #07889B;">
-          <table border="0" cellpadding="0" cellspacing="0" width="100%">
-            <tr>
-              <td style="font-size:1.6em;font-family: 'Space Mono', monospace;">
-                Welcome to Consensus
-                <br></br>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Hello {{ proposer }}.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <p>You've created a consensus proposal.</p>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <h2 style="margin-top: 2em; font-size:1.3em">This is the circle votation:</h2>
-                <p style="display: inline; margin: 1em 2em">There are <span style="font-size: 1.5rem; font-weight: 900; padding: 0 0.25rem; margin: 0 0.25rem; color: #07889B; border: 1px solid #07889B;">90</span> people in consensus</p>
-                <p style="display: inline; margin: 1em 2em">There are <span style="font-size: 1.5rem; font-weight: 900; padding: 0 0.25rem; margin: 0 0.25rem; color: #FC4A1A; border: 1px solid #FC4A1A;">90</span> people in disensus</p>
-                <br></br>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <p>This is your circle: {{ involved }}</p>
-                <p>The last person who has vote is {{ invited }}</p>
-              </td>
-            </tr>
-            <tr>
-              <td style="display: block">
-                <h2 style="margin-top: 2em; font-size:1.3em">This is the proposal:</h2>
-              </td>
-              <td bgcolor="#fff" style="border: 1px solid #07889B; display:block; width: 100%; padding: 1em;">
-                <p>
-                  {{ proposal }}
-                </p>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td bgcolor="#EFEFEF" style="padding: 15px 30px 15px 30px; bottom:0; width: 96%">
-          <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-color: transparent;">
-            <tr>
-              <td align="left" width="75%">
-                &reg; Devscola 2018
+font-weight: 400; width:100%; line-height:2em; text-align:center">
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td bgcolor="#EFEFEF">
+      <div id="logo_consensus">
+        <img alt="Consensus logotype" width="auto" height="80" style="display:block; float: left; margin: 0.5em" src="https://dl.dropboxusercontent.com/s/wsu2hvo5r4el97e/logo%20%281%29.png?dl=0">
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding: 5% 10%; border-top: 4px double #07889B;">
+      <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+          <td style="font-size:1.6em;font-family: 'Space Mono', monospace;">
+            Welcome to Consensus
+            <br></br>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Hello {{ proposer }}.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p>You've created a consensus proposal.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h2 style="margin-top: 2em; font-size:1.3em">This is the circle votation:</h2>
+            <p style="display: inline; margin: 1em 2em">There are <span style="font-size: 1.5rem; font-weight: 900; padding: 0 0.25rem; margin: 0 0.25rem; color: #07889B; border: 1px solid #07889B;">90</span> people in consensus</p>
+            <p style="display: inline; margin: 1em 2em">There are <span style="font-size: 1.5rem; font-weight: 900; padding: 0 0.25rem; margin: 0 0.25rem; color: #FC4A1A; border: 1px solid #FC4A1A;">90</span> people in disensus</p>
+            <br></br>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p>This is your circle: {{ involved }}</p>
+            <p>The last person who has vote is {{ invited }}</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="display: block">
+            <h2 style="margin-top: 2em; font-size:1.3em">This is the proposal:</h2>
+          </td>
+          <td bgcolor="#fff" style="border: 1px solid #07889B; display:block; width: 100%; padding: 1em;">
+            <p>
+              {{ proposal }}
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td bgcolor="#EFEFEF" style="padding: 15px 30px 15px 30px; bottom:0; width: 96%">
+      <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-color: transparent;">
+        <tr>
+          <td align="left" width="75%">
+            &reg; Devscola 2018
+          </td>
+          <td align="right">
+            <table border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td>
+                  <a href="http://www.twitter.com/">
+                    <img alt="Twitter" width="45" height="45" style="display: block;" border="0"  src="http://pngimg.com/uploads/twitter/twitter_PNG33.png" />
+                  </a>
                 </td>
-              <td align="right">
-                <table border="0" cellpadding="0" cellspacing="0">
-                  <tr>
-                    <td>
-                      <a href="http://www.twitter.com/">
-                        <img alt="Twitter" width="45" height="45" style="display: block;" border="0"  src="http://pngimg.com/uploads/twitter/twitter_PNG33.png" />
-                      </a>
-                    </td>
-                    <td style="font-size: 0; line-height: 0;" width="20">&nbsp;</td>
-                    <td>
-                      <a href="http://www.facebook.com/">
-                        <img alt="Facebook" width="35" height="35" style="display: block; margin-right: 1.5em" border="0"  src="http://icons.iconarchive.com/icons/icons8/android/512/Social-Networks-Facebook-icon.png" />
-                      </a>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-  </table>
+                <td style="font-size: 0; line-height: 0;" width="20">&nbsp;</td>
+                <td>
+                  <a href="http://www.facebook.com/">
+                    <img alt="Facebook" width="35" height="35" style="display: block; margin-right: 1.5em" border="0"  src="http://icons.iconarchive.com/icons/icons8/android/512/Social-Networks-Facebook-icon.png" />
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
 </body>
 </html>
