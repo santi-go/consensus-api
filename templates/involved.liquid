@@ -7,9 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link href="https://fonts.googleapis.com/css?family=Barlow|Space+Mono" rel="stylesheet">
 </head>
-<body bgcolor= "#CAEBF2" style="margin: 0; padding: 0; font-family: 'Barlow', sans-serif;
+<body style="margin: 0; padding: 0; font-family: 'Barlow', sans-serif;
 font-weight: 400; width:100%; line-height:3em; text-align:center">
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+<table bgcolor= "#CAEBF2" align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 650px; margin-left: auto; margin-right: auto">
   <tr>
     <td bgcolor="#EFEFEF">
       <div id="logo_consensus">
@@ -18,8 +18,8 @@ font-weight: 400; width:100%; line-height:3em; text-align:center">
     </td>
   </tr>
   <tr>
-    <td style="padding: 5% 10%; border-top: 4px double #07889B;">
-      <table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <td style="padding: 5%; border-top: 4px double #07889B;">
+      <table border="0" cellpadding="0" cellspacing="0">
         <tr>
           <td style="font-size:1.6em;font-family: 'Space Mono', monospace;">
             Welcome to Consensus
@@ -32,8 +32,10 @@ font-weight: 400; width:100%; line-height:3em; text-align:center">
           </td>
         </tr>
         <tr>
-          <td style="background-color: #EFEFEF; border: 1px solid #07889B; width: 100%; padding: 1em; margin-bottom: 1em">
-            {{ proposal }}
+          <td>
+            <div style="background-color: #EFEFEF; border: 1px solid #07889B; margin: 2em 2em 1em 2em;">
+              {{ proposal }}
+            </div>
           </td>
         </tr>
         <tr>
