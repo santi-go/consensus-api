@@ -21,13 +21,11 @@ class App < Sinatra::Base
 
   post '/create-proposal' do
     params = JSON.parse(request.body.read)
-    id_proposal = 'proposal_identification'
-
     domain = 'http://localhost:8080/'
     link = 'reunion-consensus.html?'
     domain_link = domain + link
     consensus_email = 'consensus@devscola.org'
-    proposal = Proposal.new(id_proposal, params['proposer'], params['circle'], params['proposal'], domain_link, consensus_email)
+    proposal = Proposal.new(id_proposal=nil, params['proposer'], params['circle'], params['proposal'], domain_link, consensus_email)
     Proposals::Repository.save(proposal)
 
     if (JSONValidator.validate_create_proposal?(params))
@@ -62,9 +60,13 @@ class App < Sinatra::Base
       :vote => vote,
       :total_consensus => 3,
       :total_disensus => 2,
-      :proposal_text => 'Lorem ipsum'
+      :proposal_text => 'Lorem ipsum',
+      :id_proposal => id_proposal
     }.to_json
     generated_json
+  end
 
+  post '/votation-state' do
+    Notify.votation_state
   end
 end
