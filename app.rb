@@ -25,7 +25,11 @@ class App < Sinatra::Base
     link = 'reunion-consensus.html?'
     domain_link = domain + link
     consensus_email = 'consensus@devscola.org'
-    proposal = Proposal.new(id_proposal=nil, params['proposer'], params['circle'], params['proposal'], domain_link, consensus_email)
+    proposal = Proposal.new(proposer: params['proposer'],
+                            involved: params['circle'],
+                            proposal: params['proposal'],
+                            domain_link: domain_link,
+                            consensus_email: consensus_email)
     Proposals::Repository.save(proposal)
 
     if (JSONValidator.validate_create_proposal?(params))
