@@ -2,6 +2,10 @@ require_relative '../test_support/doubles/mailer'
 require_relative '../../system/communication'
 
 RSpec.describe Communication do
+  after do
+    TestSupport::Doubles::Mailer.clear
+  end
+
   it 'sends emails' do
     stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
     origin = 'some_sender_email'

@@ -27,7 +27,11 @@ module TestSupport
 
         def clear
           @count = 0
+          @first_sent_body = nil
+          @last_sent_body = nil
+          @delivered_mail = nil
           @first_origin = nil
+          @delivered_mail = nil
         end
 
         def origin

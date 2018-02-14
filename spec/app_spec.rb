@@ -131,7 +131,6 @@ describe 'Send mail endpoint' do
         expect(total_deliveries).to eq(2)
         expect(first_delivery).to include('Consensus Proposal for proposer')
         expect(second_delivery).to_not include('Consensus Proposal for proposer')
-
     end
   end
 
