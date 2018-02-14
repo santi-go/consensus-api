@@ -3,6 +3,7 @@ module TestSupport
     class Mailer
       class << self
         def deliver(origin, destiny, subject, body)
+          @first_sent_body ||= body
           @first_origin ||= origin
           @count ||= 0
           @count += 1
@@ -35,6 +36,10 @@ module TestSupport
 
         def last_sent_body
           @last_sent_body
+        end
+
+        def first_sent_body
+          @first_sent_body
         end
       end
     end

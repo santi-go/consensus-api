@@ -9,83 +9,83 @@
 </head>
 <body bgcolor= "#CAEBF2" style="margin: 0; padding: 0; font-family: 'Barlow', sans-serif;
 font-weight: 400; width:100%; line-height:3em; text-align:center">
-  <table border="0" cellpadding="0" cellspacing="0" width="100%">
-    <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr>
-        <td bgcolor="#EFEFEF">
-          <div id="logo_consensus">
-            <img alt="Consensus logotype" width="auto" height="80" style="display:block; float: left; margin: 0.5em" src="https://dl.dropboxusercontent.com/s/zumuyhsupldxfed/logo.png?dl=0">
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding: 5% 10%; border-top: 4px double #07889B;">
-          <table border="0" cellpadding="0" cellspacing="0" width="100%">
-            <tr>
-              <td style="font-size:1.6em;font-family: 'Space Mono', monospace;">
-                Welcome to Consensus
-                <br></br>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Hello, {{ proposer }} has invited you to participate:
-              </td>
-            </tr>
-            <tr>
-              <td style="background-color: #EFEFEF; border: 1px solid #07889B; width: 100%; padding: 1em; margin-bottom: 1em">
-                {{ proposal }}
-              </td>
-            </tr>
-            <tr>
-              <td style="line-height:5em">
-                This is your circle: {{ involved }}
-              </td>
-            </tr>
-            <tr style = "display:inline">
-              <td>
-                <button style="cursor: pointer; width: 10em; text-transform: uppercase; padding: 1em; margin:3em 5em; border-radius: 24px; border: 1px solid #07789B; background: transparent">
-                  <a style="text-decoration:none; color: #07789B;" href="{{ domain_link }}&id={{ id_proposal }}&user={{ recipient }}&vote=consensus">Consensus</a>
-                </button>
-              </td>
-              <td>
-                <button style="cursor: pointer; width: 10em; text-transform: uppercase; padding: 1em; margin: 3em 5em; border-radius: 24px; border: 1px solid #FC4A1A; background: transparent">
-                  <a style="text-decoration:none; color: #FC4A1A; " href="{{ domain_link }}&id={{ id_proposal }}&user={{ recipient }}&vote=disensus">Disensus</a>
-                </button>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td bgcolor="#EFEFEF" style="padding: 15px 30px 15px 30px; position:absolute; bottom:0; width: 96%">
-          <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-color: transparent;">
-            <tr>
-              <td align="left" width="75%">
-                &reg; Devscola 2018
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td bgcolor="#EFEFEF">
+      <div id="logo_consensus">
+        <img alt="Consensus logotype" width="auto" height="80" style="display:block; float: left; margin: 0.5em" src="https://dl.dropboxusercontent.com/s/wsu2hvo5r4el97e/logo%20%281%29.png?dl=0">
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding: 5% 10%; border-top: 4px double #07889B;">
+      <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+          <td style="font-size:1.6em;font-family: 'Space Mono', monospace;">
+            Welcome to Consensus
+            <br></br>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Hello, {{ proposer }} has invited you to participate:
+          </td>
+        </tr>
+        <tr>
+          <td style="background-color: #EFEFEF; border: 1px solid #07889B; width: 100%; padding: 1em; margin-bottom: 1em">
+            {{ proposal }}
+          </td>
+        </tr>
+        <tr>
+          <td style="line-height:5em">
+            This is your circle: {{ involved }}
+          </td>
+        </tr>
+        <tr style = "display:inline">
+          <td>
+            <div style="cursor: pointer; width: 10em; text-transform: uppercase; margin:3em 5em; border-radius: 24px; border: 1px solid #07789B; background: transparent;"
+                 onmouseover = "this.style.outline = 'none'">
+              <a href="{{ domain_link }}id={{ id_proposal }}&user={{ recipient }}&vote=consensus" style="text-decoration:none; color: #07789B; padding:1em;">Consensus</a>
+            </div>
+          </td>
+          <td>
+            <div style="cursor: pointer; width: 10em; text-transform: uppercase; margin: 3em 5em; border-radius: 24px; border: 1px solid #FC4A1A; background: transparent"
+                 onmouseover = "this.style.outline = 'none'">
+              <a href="{{ domain_link }}id={{ id_proposal }}&user={{ recipient }}&vote=disensus" style="text-decoration:none; color: #FC4A1A; padding:1em;">Disensus</a>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td bgcolor="#EFEFEF" style="padding: 15px 30px 15px 30px; width: 96%">
+      <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-color: transparent;">
+        <tr>
+          <td align="left" width="75%">
+            &reg; Devscola 2018
+          </td>
+          <td align="right">
+            <table border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td>
+                  <a href="http://www.twitter.com/">
+                    <img alt="Twitter" width="45" height="45" style="display: block;" border="0"  src="http://pngimg.com/uploads/twitter/twitter_PNG33.png" />
+                  </a>
                 </td>
-              <td align="right">
-                <table border="0" cellpadding="0" cellspacing="0">
-                  <tr>
-                    <td>
-                      <a href="http://www.twitter.com/">
-                        <img alt="Twitter" width="45" height="45" style="display: block;" border="0"  src="http://pngimg.com/uploads/twitter/twitter_PNG33.png" />
-                      </a>
-                    </td>
-                    <td style="font-size: 0; line-height: 0;" width="20">&nbsp;</td>
-                    <td>
-                      <a href="http://www.facebook.com/">
-                        <img alt="Facebook" width="35" height="35" style="display: block; margin-right: 1.5em" border="0"  src="http://icons.iconarchive.com/icons/icons8/android/512/Social-Networks-Facebook-icon.png" />
-                      </a>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-  </table>
+                <td style="font-size: 0; line-height: 0;" width="20">&nbsp;</td>
+                <td>
+                  <a href="http://www.facebook.com/">
+                    <img alt="Facebook" width="35" height="35" style="display: block; margin-right: 1.5em" border="0"  src="http://icons.iconarchive.com/icons/icons8/android/512/Social-Networks-Facebook-icon.png" />
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
 </body>
 </html>
