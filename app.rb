@@ -4,10 +4,10 @@ require 'sinatra/cross_origin'
 require 'json'
 
 require_relative './system/notify'
-require_relative './system/proposals/proposal'
+require_relative './system/models/proposal'
 require_relative './system/json_validator'
 require_relative 'initializers/configure_mail_gem'
-require_relative './system/proposals/repository'
+require_relative './system/models/repository'
 
 class App < Sinatra::Base
 
@@ -30,7 +30,7 @@ class App < Sinatra::Base
                             proposal: params['proposal'],
                             domain_link: domain_link,
                             consensus_email: consensus_email)
-    Proposals::Repository.save(proposal)
+    Repository::Proposals.save(proposal)
 
     if (JSONValidator.validate_create_proposal?(params))
       Notify.do(proposal)

@@ -1,15 +1,15 @@
-module Proposals
-  class Repository
+module Repository
+  class Proposals
     class << self
-      @@proposals_data ||= []
+      @@Repository_data ||= []
 
       def save(proposal)
-        @@proposals_data << proposal
+        @@Repository_data << proposal
         return proposal
       end
 
       def retrieve(id_proposal)
-        @@proposals_data.each do |proposal|
+        @@Repository_data.each do |proposal|
           return proposal if proposal.id_proposal == id_proposal
         end
       end

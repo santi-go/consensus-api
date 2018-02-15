@@ -10,4 +10,5 @@ class Fixture
   CIRCLE = INVOLVED.unshift(PROPOSER)
   RECIPIENT = 'correo1@domain.es'
   CONSENSUS_EMAIL = 'consensus@devscola.org'
+  VOTE = 'consensus'
 end
