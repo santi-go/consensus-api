@@ -142,8 +142,8 @@ describe 'Send mail endpoint' do
     recipient = Fixture::RECIPIENT
     proposal = Proposal.new(id_proposal: Fixture::ID_PROPOSAL, proposer: Fixture::PROPOSER, involved: Fixture::INVOLVED, proposal: Fixture::PROPOSAL, domain_link: Fixture::DOMAIN_LINK, consensus_email: Fixture::CONSENSUS_EMAIL)
 
-    consensus_link = proposal.domain_link + "id=" + proposal.id_proposal + "&user=" + recipient + '&vote=consensus'
-    disensus_link =  proposal.domain_link + "id=" + proposal.id_proposal + "&user=" + recipient + '&vote=disensus'
+    consensus_link = proposal.domain_link + "id_proposal=" + proposal.id_proposal + "&user=" + recipient + '&vote=consensus'
+    disensus_link =  proposal.domain_link + "id_proposal=" + proposal.id_proposal + "&user=" + recipient + '&vote=disensus'
 
     Notify.body_constructor(proposal, recipient, template)
     body_content = Notify.get_body
@@ -165,15 +165,17 @@ describe 'Vote endpoint'do
 
   it 'send a json' do
     body_sended = {
-      token: 'id=1&user=pepe@correo.es&vote=disensus'
+    token: 'id_proposal=1&user=pepe@correo.es&vote=disensus'
     }
+
     post '/vote-consensus', body_sended.to_json
+
     have_expected_keys
   end
 
   it 'checks if user has voted for a proposal yet' do
     body_sended = {
-      token: 'id=1&user=pepe@correo.es&vote=disensus'
+      token: 'id_proposal=1&user=pepe@correo.es&vote=disensus'
     }
     post '/vote-consensus', body_sended.to_json
     post '/vote-consensus', body_sended.to_json
@@ -183,10 +185,10 @@ describe 'Vote endpoint'do
 
   it 'allows to update votes for the same proposal' do
     body_sended = {
-      token: 'id=1&user=pepe@correo.es&vote=disensus'
+      token: 'id_proposal=1&user=pepe@correo.es&vote=disensus'
     }
     body_updated = {
-      token: 'id=1&user=pepe@correo.es&vote=consensus'
+      token: 'id_proposal=1&user=pepe@correo.es&vote=consensus'
     }
     post '/vote-consensus', body_sended.to_json
 
@@ -223,11 +225,11 @@ end
 
 
 def have_expected_keys
-  parsed = JSON.parse(last_response.body)
-  expect(parsed).to have_key("user")
-  expect(parsed).to have_key("proposer")
-  expect(parsed).to have_key("vote")
-  expect(parsed).to have_key("total_consensus")
-  expect(parsed).to have_key("total_disensus")
-  expect(parsed).to have_key("proposal_text")
+  parsed = last_response.body
+  expect(parsed).to include(":user")
+  expect(parsed).to include(":proposer")
+  expect(parsed).to include(":vote")
+  expect(parsed).to include(":total_consensus")
+  expect(parsed).to include(":total_disensus")
+  expect(parsed).to include(":proposal_text")
 end

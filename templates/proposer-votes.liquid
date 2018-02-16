@@ -7,9 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link href="https://fonts.googleapis.com/css?family=Barlow|Space+Mono" rel="stylesheet">
 </head>
-<body bgcolor= "#CAEBF2" style="margin: 0; padding: 0; font-family: 'Barlow', sans-serif;
+<body style="margin: 0; padding: 0; font-family: 'Barlow', sans-serif;
 font-weight: 400; width:100%; line-height:2em; text-align:center">
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+<table bgcolor= "#CAEBF2" align="center" border="0" cellpadding="0" cellspacing="0" width="100%"  style="max-width: 700px; margin: auto">
   <tr>
     <td bgcolor="#EFEFEF">
       <div id="logo_consensus">
@@ -39,8 +39,14 @@ font-weight: 400; width:100%; line-height:2em; text-align:center">
         <tr>
           <td>
             <h2 style="margin-top: 2em; font-size:1.3em">This is the circle votation:</h2>
-            <p style="display: inline; margin: 1em 2em">There are <span style="font-size: 1.5rem; font-weight: 900; padding: 0 0.25rem; margin: 0 0.25rem; color: #07889B; border: 1px solid #07889B;">{{ total_consensus }}</span> people in consensus</p>
-            <p style="display: inline; margin: 1em 2em">There are <span style="font-size: 1.5rem; font-weight: 900; padding: 0 0.25rem; margin: 0 0.25rem; color: #FC4A1A; border: 1px solid #FC4A1A;">{{ total_disensus }}</span> people in disensus</p>
+            <div style="display: inline-block">
+              <p style="margin: 1em 2em; width: fit-content; display: inline-block; font-weight: 900; color: #07889B;"><span style="display: block; font-size: 1.5rem; padding: 0 0.25rem; margin: 0 0.25rem; color: #07889B; border: 1px solid #07889B;">{{ total_consensus }}</span> in consensus</p>
+            </div>
+            <div style="display: inline-block">
+              <p style="margin: 1em 2em; width: fit-content; display: inline-block; font-weight: 900; color: #FC4A1A;"><span style="display: block; font-size: 1.5rem; padding: 0 0.25rem; margin: 0 0.25rem; color: #FC4A1A; border: 1px solid #FC4A1A;">{{ total_disensus }}</span> in disensus</p>
+            </div>
+            <td>
+            </td>
             <br></br>
           </td>
         </tr>
@@ -54,7 +60,7 @@ font-weight: 400; width:100%; line-height:2em; text-align:center">
           <td style="display: block">
             <h2 style="margin-top: 2em; font-size:1.3em">This is the proposal:</h2>
           </td>
-          <td bgcolor="#fff" style="border: 1px solid #07889B; display:block; width: 100%; padding: 1em;">
+          <td bgcolor="#fff" style="border: 1px solid #07889B; display:block; padding: 1em;">
             <p>
               {{ proposal }}
             </p>
