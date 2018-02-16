@@ -178,7 +178,7 @@ describe 'Vote endpoint'do
     post '/vote-consensus', body_sended.to_json
     post '/vote-consensus', body_sended.to_json
 
-    expect(Repository::Votes.vote_count).to eq(1)
+    expect(Repository::Votes.count).to eq(1)
   end
 
   it 'allows to update votes for the same proposal' do
@@ -194,7 +194,7 @@ describe 'Vote endpoint'do
 
     post '/vote-consensus', body_updated.to_json
 
-    expect(Repository::Votes.vote_count).to eq(1)
+    expect(Repository::Votes.count).to eq(1)
     expect(Repository::Votes.repository_data.first.vote).to eq('consensus')
 
   end

@@ -1,4 +1,4 @@
-require_relative '../system/models/repository'
+require_relative '../system/repositories/repository'
 require_relative '../system/models/vote'
 require_relative 'test_support/fixture'
 

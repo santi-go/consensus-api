@@ -7,7 +7,8 @@ require_relative './system/notify'
 require_relative './system/models/proposal'
 require_relative './system/json_validator'
 require_relative 'initializers/configure_mail_gem'
-require_relative './system/models/repository'
+require_relative './system/repositories/repository'
+
 
 class App < Sinatra::Base
 

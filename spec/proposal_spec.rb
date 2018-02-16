@@ -1,5 +1,5 @@
 require_relative '../system/models/proposal'
-require_relative '../system/models/repository'
+require_relative '../system/repositories/repository'
 require_relative 'test_support/fixture'
 
 describe 'Created proposal' do
