@@ -1,10 +1,10 @@
 class Vote
+  attr_reader :id_proposal, :user
 
-  def initialize(id_proposal:, involved:, vote:)
+  def initialize(id_proposal:, user:, vote:)
     @id_proposal = id_proposal
-    @involved = involved
+    @user = user
     @vote = vote
-    @date = Time.now.strftime("Last vote was in %d/%m/%Y - %T")
+    @date = Time.now.strftime("%d/%m/%Y - %T")
   end
-
 end

@@ -58,6 +58,11 @@ class App < Sinatra::Base
     vote = hash['vote']
     id_proposal = hash['id_proposal']
 
+    vote = Vote.new(id_proposal: id_proposal,
+                            user: user,
+                            vote: vote)
+    Repository::Votes.check_vote(vote)
+
     generated_json = {
       :user => user,
       :proposer => 'proposer@mail.com',

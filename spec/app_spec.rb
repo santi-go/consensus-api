@@ -5,20 +5,22 @@ require_relative '../app.rb'
 require_relative 'test_support/fixture'
 require_relative 'test_support/doubles/mailer'
 
+include Rack::Test::Methods
+
+def app
+  App
+end
+
 describe 'Send mail endpoint' do
-
-  include Rack::Test::Methods
-
-  def app
-    App
-  end
 
   before(:each) do
     TestSupport::Doubles::Mailer.clear
+    Repository::Proposals.clear
   end
 
   after(:each) do
     TestSupport::Doubles::Mailer.clear
+    Repository::Proposals.clear
   end
 
   it 'accepts a json with required parameters' do
@@ -149,6 +151,18 @@ describe 'Send mail endpoint' do
     expect(body_content).to include(disensus_link)
   end
 
+end
+
+describe 'Vote endpoint'do
+
+  before(:each) do
+    Repository::Votes.clear
+  end
+
+  after(:each) do
+    Repository::Votes.clear
+  end
+
   it 'send a json' do
     body_sended = {
       token: 'id=1&user=pepe@correo.es&vote=disensus'
@@ -157,34 +171,45 @@ describe 'Send mail endpoint' do
     have_expected_keys
   end
 
-  def have_expected_keys
-    parsed = JSON.parse(last_response.body)
-    expect(parsed).to have_key("user")
-    expect(parsed).to have_key("proposer")
-    expect(parsed).to have_key("vote")
-    expect(parsed).to have_key("total_consensus")
-    expect(parsed).to have_key("total_disensus")
-    expect(parsed).to have_key("proposal_text")
+  it 'checks if user has voted for a proposal yet' do
+    body_sended = {
+      token: 'id=1&user=pepe@correo.es&vote=disensus'
+    }
+    post '/vote-consensus', body_sended.to_json
+    post '/vote-consensus', body_sended.to_json
+
+    expect(Repository::Votes.vote_count).to eq(1)
   end
+end
 
-  context 'endpoint votation status' do
-    it 'sends an email with votation state' do
-      stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
-      proposer = 'pepe@correo.org'
-      involved = 'helen@gmail.es, zero@gmail.com'
-      last_voter = 'zero@gmail.com'
-      total_consensus = '90'
-      total_disensus = '80'
-      proposal = 'Lorem Ipsum'
+describe 'Votation state endpoint' do
+  it 'sends an email with votation state' do
+    stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
+    proposer = 'pepe@correo.org'
+    involved = 'helen@gmail.es, zero@gmail.com'
+    last_voter = 'zero@gmail.com'
+    total_consensus = '90'
+    total_disensus = '80'
+    proposal = 'Lorem Ipsum'
 
-      post '/votation-state'
+    post '/votation-state'
 
-      expect(TestSupport::Doubles::Mailer.last_sent_body).to include(proposer)
-      expect(TestSupport::Doubles::Mailer.last_sent_body).to include(involved)
-      expect(TestSupport::Doubles::Mailer.last_sent_body).to include(last_voter)
-      expect(TestSupport::Doubles::Mailer.last_sent_body).to include(total_consensus)
-      expect(TestSupport::Doubles::Mailer.last_sent_body).to include(total_disensus)
-      expect(TestSupport::Doubles::Mailer.last_sent_body).to include(proposal)
-    end
+    expect(TestSupport::Doubles::Mailer.last_sent_body).to include(proposer)
+    expect(TestSupport::Doubles::Mailer.last_sent_body).to include(involved)
+    expect(TestSupport::Doubles::Mailer.last_sent_body).to include(last_voter)
+    expect(TestSupport::Doubles::Mailer.last_sent_body).to include(total_consensus)
+    expect(TestSupport::Doubles::Mailer.last_sent_body).to include(total_disensus)
+    expect(TestSupport::Doubles::Mailer.last_sent_body).to include(proposal)
   end
+end
+
+
+def have_expected_keys
+  parsed = JSON.parse(last_response.body)
+  expect(parsed).to have_key("user")
+  expect(parsed).to have_key("proposer")
+  expect(parsed).to have_key("vote")
+  expect(parsed).to have_key("total_consensus")
+  expect(parsed).to have_key("total_disensus")
+  expect(parsed).to have_key("proposal_text")
 end
