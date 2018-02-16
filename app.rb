@@ -58,13 +58,15 @@ class App < Sinatra::Base
     vote = hash['vote']
     id_proposal = hash['id_proposal']
 
+    retrieved_proposal = Repository::Proposals.retrieve(id_proposal)
+
     generated_json = {
       :user => user,
-      :proposer => 'proposer@mail.com',
+      :proposer => retrieved_proposal.proposer,
       :vote => vote,
       :total_consensus => 3,
       :total_disensus => 2,
-      :proposal_text => 'Lorem ipsum',
+      :proposal_text => retrieved_proposal.proposal,
       :id_proposal => id_proposal
     }.to_json
     generated_json
