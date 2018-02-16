@@ -5,6 +5,7 @@ require 'json'
 
 require_relative './system/notify'
 require_relative './system/models/proposal'
+require_relative './system/models/vote'
 require_relative './system/json_validator'
 require_relative 'initializers/configure_mail_gem'
 require_relative './system/repositories/repository'
@@ -58,7 +59,7 @@ class App < Sinatra::Base
     user = hash['user']
     vote = hash['vote']
     id_proposal = hash['id_proposal']
-
+    retrieved_proposal = Repository::Proposals.retrieve(id_proposal)
     vote = Vote.new(id_proposal: id_proposal,
                             user: user,
                             vote: vote)
@@ -66,11 +67,9 @@ class App < Sinatra::Base
 
     generated_json = {
       :user => user,
-      :proposer => 'proposer@mail.com',
-      :vote => vote,
-      :total_consensus => 3,
-      :total_disensus => 2,
-      :proposal_text => 'Lorem ipsum',
+      :proposer => retrieved_proposal.proposer,
+      :vote => vote.vote,
+      :proposal_text => retrieved_proposal.proposal,
       :id_proposal => id_proposal
     }.to_json
     generated_json
