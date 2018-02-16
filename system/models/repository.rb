@@ -66,7 +66,7 @@ module Repository
         end
       end
 
-      def update(decision)
+      def update(last_vote, decision)
         last_vote.vote = decision
       end
     end

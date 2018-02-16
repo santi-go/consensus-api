@@ -180,6 +180,24 @@ describe 'Vote endpoint'do
 
     expect(Repository::Votes.vote_count).to eq(1)
   end
+
+  it 'allows to update votes for the same proposal' do
+    body_sended = {
+      token: 'id=1&user=pepe@correo.es&vote=disensus'
+    }
+    body_updated = {
+      token: 'id=1&user=pepe@correo.es&vote=consensus'
+    }
+    post '/vote-consensus', body_sended.to_json
+
+    expect(Repository::Votes.repository_data.first.vote).to eq('disensus')
+
+    post '/vote-consensus', body_updated.to_json
+
+    expect(Repository::Votes.vote_count).to eq(1)
+    expect(Repository::Votes.repository_data.first.vote).to eq('consensus')
+
+  end
 end
 
 describe 'Votation state endpoint' do
