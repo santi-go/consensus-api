@@ -9,7 +9,7 @@ require_relative './system/models/vote'
 require_relative './system/json_validator'
 require_relative 'initializers/configure_mail_gem'
 require_relative './system/repositories/repository'
-
+require_relative './system/actions/vote'
 
 class App < Sinatra::Base
 
@@ -50,32 +50,7 @@ class App < Sinatra::Base
 
   post '/vote-consensus' do
     params = JSON.parse(request.body.read)
-    token = params['token']
-    array = token.split('&')
-    array_params = []
-    array.each {|element| array_params << element.split('=')}
-    hash = array_params.to_h
-
-    user = hash['user']
-    vote = hash['vote']
-    id_proposal = hash['id_proposal']
-    retrieved_proposal = Repository::Proposals.retrieve(id_proposal)
-    vote = Vote.new(id_proposal: id_proposal,
-                            user: user,
-                            vote: vote)
-    Repository::Votes.check_vote(vote)
-
-    generated_json = {
-      :user => user,
-      :proposer => retrieved_proposal.proposer,
-      :vote => vote.vote,
-      :proposal_text => retrieved_proposal.proposal,
-      :id_proposal => id_proposal
-    }.to_json
-    generated_json
-  end
-
-  post '/votation-state' do
-    Notify.votation_state
+    response_to_invited = Actions::Votation.do(params)
+    response_to_invited
   end
 end

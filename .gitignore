@@ -3,4 +3,4 @@
 .Spotlight-V100
 .DS_Store
 
-password_mail.txt
+password_mail.env

@@ -183,14 +183,19 @@ describe 'Vote endpoint'do
     expect(Repository::Votes.count).to eq(1)
   end
 
-  it 'allows to update votes for the same proposal' do
+  it 'allows to update votes for the same proposal', :wip do
+    proposal = Proposal.new(id_proposal: 1, proposer: Fixture::PROPOSER, involved: ['pepe@correo.es'], proposal: Fixture::PROPOSAL, domain_link: Fixture::DOMAIN_LINK, consensus_email: Fixture::CONSENSUS_EMAIL)
+    Repository::Proposals.save(proposal)
+
     body_sended = {
       token: 'id_proposal=1&user=pepe@correo.es&vote=disensus'
     }
     body_updated = {
       token: 'id_proposal=1&user=pepe@correo.es&vote=consensus'
     }
-    post '/vote-consensus', body_sended.to_json
+
+
+    result = post '/vote-consensus', body_sended.to_json
 
     expect(Repository::Votes.repository_data.first.vote).to eq('disensus')
 
@@ -201,28 +206,6 @@ describe 'Vote endpoint'do
 
   end
 end
-
-describe 'Votation state endpoint' do
-  it 'sends an email with votation state' do
-    stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
-    proposer = 'pepe@correo.org'
-    involved = 'helen@gmail.es, zero@gmail.com'
-    last_voter = 'zero@gmail.com'
-    total_consensus = '90'
-    total_disensus = '80'
-    proposal = 'Lorem Ipsum'
-
-    post '/votation-state'
-
-    expect(TestSupport::Doubles::Mailer.last_sent_body).to include(proposer)
-    expect(TestSupport::Doubles::Mailer.last_sent_body).to include(involved)
-    expect(TestSupport::Doubles::Mailer.last_sent_body).to include(last_voter)
-    expect(TestSupport::Doubles::Mailer.last_sent_body).to include(total_consensus)
-    expect(TestSupport::Doubles::Mailer.last_sent_body).to include(total_disensus)
-    expect(TestSupport::Doubles::Mailer.last_sent_body).to include(proposal)
-  end
-end
-
 
 def have_expected_keys
   parsed = last_response.body
