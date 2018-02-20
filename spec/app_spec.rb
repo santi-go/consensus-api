@@ -136,7 +136,7 @@ describe 'Send mail endpoint' do
     end
   end
 
-  it 'for involved that includes CTA for consensus and disensus' do
+  xit 'for involved that includes CTA for consensus and disensus' do
     stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
     template = Fixture::TEMPLATE_INVOLVED
     recipient = Fixture::RECIPIENT

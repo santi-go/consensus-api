@@ -2,6 +2,7 @@ require 'rubygems'
 require 'sinatra/base'
 require 'sinatra/cross_origin'
 require 'json'
+require 'base64'
 
 require_relative './system/notify'
 require_relative './system/models/proposal'
@@ -51,6 +52,11 @@ class App < Sinatra::Base
   post '/vote-consensus' do
     params = JSON.parse(request.body.read)
     token = params['token']
+    token = token.split('=')
+    token = token[1]
+    decode_list = Base64.decode64(token)
+    p decode_list
+
     array = token.split('&')
     array_params = []
     array.each {|element| array_params << element.split('=')}
