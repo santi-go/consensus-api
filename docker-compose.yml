@@ -2,6 +2,8 @@ version: '3.2'
 services:
   api:
     build: .
+    env_file:
+      password_mail.env
     volumes:
       - type: bind
         source: .
