@@ -157,15 +157,19 @@ describe 'Vote endpoint'do
 
   before(:each) do
     Repository::Votes.clear
+    Repository::Proposals.clear
   end
 
   after(:each) do
     Repository::Votes.clear
+    Repository::Proposals.clear
   end
 
   it 'send a json' do
+    proposal = Proposal.new(id_proposal: '1', proposer: Fixture::PROPOSER, involved: ['pepe@correo.es'], proposal: "Text of proposal", domain_link: Fixture::DOMAIN_LINK, consensus_email: Fixture::CONSENSUS_EMAIL)
+    Repository::Proposals.save(proposal)
     body_sended = {
-    token: 'id_proposal=1&user=pepe@correo.es&vote=disensus'
+      token: 'id_proposal=1&user=pepe@correo.es&vote=disensus'
     }
 
     post '/vote-consensus', body_sended.to_json
@@ -186,14 +190,12 @@ describe 'Vote endpoint'do
   it 'allows to update votes for the same proposal', :wip do
     proposal = Proposal.new(id_proposal: 1, proposer: Fixture::PROPOSER, involved: ['pepe@correo.es'], proposal: Fixture::PROPOSAL, domain_link: Fixture::DOMAIN_LINK, consensus_email: Fixture::CONSENSUS_EMAIL)
     Repository::Proposals.save(proposal)
-
     body_sended = {
       token: 'id_proposal=1&user=pepe@correo.es&vote=disensus'
     }
     body_updated = {
       token: 'id_proposal=1&user=pepe@correo.es&vote=consensus'
     }
-
 
     result = post '/vote-consensus', body_sended.to_json
 
@@ -203,7 +205,6 @@ describe 'Vote endpoint'do
 
     expect(Repository::Votes.count).to eq(1)
     expect(Repository::Votes.repository_data.first.vote).to eq('consensus')
-
   end
 end
 

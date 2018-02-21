@@ -14,14 +14,14 @@ module Actions
 
         retrieved_proposal = Repository::Proposals.retrieve(id_proposal)
         save_vote(id_proposal, user, vote)
-        notify_votation_state(retrieved_proposal, user)
+        notify_votation_state(retrieved_proposal[0], user)
 
         response_to_invited = {
-          :user => user,
+          :user => user.to_s,
           :proposer => retrieved_proposal[0].proposer,
-          :vote => vote,
+          :vote => vote.to_s,
           :proposal_text => retrieved_proposal[0].proposal,
-          :id_proposal => id_proposal
+          :id_proposal => id_proposal.to_s
         }.to_json
         response_to_invited
       end
