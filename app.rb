@@ -10,6 +10,7 @@ require_relative './system/json_validator'
 require_relative 'initializers/configure_mail_gem'
 require_relative './system/repositories/repository'
 require_relative './system/actions/vote'
+require_relative './system/actions/create_proposal'
 
 class App < Sinatra::Base
 
@@ -23,22 +24,14 @@ class App < Sinatra::Base
 
   post '/create-proposal' do
     params = JSON.parse(request.body.read)
-    domain = 'http://localhost:8080/'
-    link = 'reunion-consensus.html?'
-    domain_link = domain + link
-    consensus_email = 'consensus@devscola.org'
-    proposal = Proposal.new(proposer: params['proposer'],
-                            involved: params['circle'],
-                            proposal: params['proposal'],
-                            domain_link: domain_link,
-                            consensus_email: consensus_email)
-    Repository::Proposals.save(proposal)
+    return status 422 if !(JSONValidator.validate_create_proposal?(params))
+    Actions::CreateProposal.do(params)
+  end
 
-    if (JSONValidator.validate_create_proposal?(params))
-      Notify.do(proposal)
-    else
-      status 422
-    end
+  post '/vote-consensus' do
+    params = JSON.parse(request.body.read)
+    response_to_invited = Actions::Votation.do(params)
+    response_to_invited
   end
 
   options "*" do
@@ -46,11 +39,5 @@ class App < Sinatra::Base
     response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type, Accept, X-User-Email, X-Auth-Token"
     response.headers["Access-Control-Allow-Origin"] = "*"
     200
-  end
-
-  post '/vote-consensus' do
-    params = JSON.parse(request.body.read)
-    response_to_invited = Actions::Votation.do(params)
-    response_to_invited
   end
 end
