@@ -31,11 +31,8 @@ class Notify
     end
 
     def body_constructor(new_proposal, mail_to, template)
-
-
-
-      encoded_list_consenso = Base64.encode64(to_encode('consenso'))
-      encoded_list_disenso = Base64.encode64(to_encode('disenso'))
+      encoded_list_consenso = Base64.encode64(encode('consenso', new_proposal, mail_to))
+      encoded_list_disenso = Base64.encode64(encode('disenso', new_proposal, mail_to))
 
       circle_beautified = beautify_list(circle(new_proposal.involved, new_proposal.proposer))
       consensus_body = template.render(
@@ -49,8 +46,8 @@ class Notify
       @body = consensus_body
     end
 
-    def encode(vote)
-      to_encode = {
+    def encode(vote, new_proposal, mail_to)
+      {
         'id_proposal': new_proposal.id_proposal,
         'recipient': mail_to,
         'vote': vote
@@ -65,18 +62,21 @@ class Notify
       @body
     end
 
-    def votation_state
+    def votation_state(proposal_array, user)
+      proposal = proposal_array[0]
       from = 'consensus@devscola.org'
-      mail_to = 'pepe@correo.org'
-      subject = Subject.create('Lorem Ipsum')
+      mail_to = proposal.proposer
+      subject = Subject.create(proposal.proposal)
       template = Liquid::Template.parse(File.read("./templates/proposer-votes.liquid"))
+      consensus_votes = Repository::Votes.voted(proposal.id_proposal, 'consensus')
+      disensus_votes = Repository::Votes.voted(proposal.id_proposal, 'disensus')
       body = template.render(
         'proposer' => mail_to,
-        'involved' => 'helen@gmail.es, zero@gmail.com',
-        'last_voter' => 'zero@gmail.com',
-        'total_consensus' => '90',
-        'total_disensus' => '80',
-        'proposal' => 'Lorem Ipsum'
+        'involved' => proposal.involved,
+        'last_voter' => user,
+        'total_consensus' => consensus_votes ,
+        'total_disensus' => disensus_votes,
+        'proposal' => proposal.proposal
         )
       Communication.deliver(from, mail_to, subject, body)
     end
