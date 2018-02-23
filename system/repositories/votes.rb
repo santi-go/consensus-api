@@ -17,13 +17,16 @@ module Repository
       end
 
       def retrieve(id_proposal, user)
-        result = @@repository_data.each do |vote|
-          return vote if (vote.id_proposal == id_proposal && vote.user == user)
-        end
-        if (result.length != 1)
-           return nil
-        else
-          return result
+        result = []
+          @@repository_data.each do |vote|
+            if (vote.id_proposal == id_proposal && vote.user == user)
+                result = vote
+            end
+          end
+        if !(result)
+            return nil
+         else
+           return result
         end
       end
 

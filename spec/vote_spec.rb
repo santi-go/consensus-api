@@ -6,7 +6,7 @@ describe 'Vote' do
   it 'saves a vote in a repository' do
     vote = Vote.new(id_proposal: Fixture::ID_PROPOSAL, user: Fixture::RECIPIENT, vote: Fixture::VOTE)
 
-    response = Repository::Votes.save(vote)
+    Repository::Votes.save(vote)
 
     expect(vote.id_proposal).to eq(Fixture::ID_PROPOSAL)
   end

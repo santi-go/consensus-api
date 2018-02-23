@@ -13,23 +13,23 @@ class Subject
 
   private
 
-    def first_words (text, words_number)
+    def first_words(text, words_number)
       tokens = text.split(' ')
       first_words = tokens[0...words_number]
       first_words.join(' ')+'...'
     end
 
-    def extract_first_sentence (text)
+    def extract_first_sentence(text)
       position = text.index('.')
       return text unless position
-      sentence = text[0..position]
+      text[0..position]
     end
 
     def strip_html(sentence)
       sentence.gsub( %r{</?[^>]+?>}, ' ' ).strip
     end
 
-    def words_of (text)
+    def words_of(text)
       text.split.length
     end
   end

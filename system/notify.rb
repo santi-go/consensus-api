@@ -51,7 +51,7 @@ class Notify
     end
 
     def votation_state(proposal_array, user)
-      proposal = proposal_array[0]
+      proposal = proposal_array
       from = 'consensus@devscola.org'
       mail_to = proposal.proposer
       subject = Subject.create(proposal.proposal)

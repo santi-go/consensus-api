@@ -197,7 +197,7 @@ describe 'Vote endpoint'do
       token: 'id_proposal=1&user=pepe@correo.es&vote=consensus'
     }
 
-    result = post '/vote-consensus', body_sended.to_json
+    post '/vote-consensus', body_sended.to_json
 
     expect(Repository::Votes.repository_data.first.vote).to eq('disensus')
 
@@ -210,8 +210,8 @@ end
 
 def have_expected_keys
   parsed = last_response.body
-  expect(parsed).to include(":user")
-  expect(parsed).to include(":proposer")
-  expect(parsed).to include(":vote")
-  expect(parsed).to include(":proposal_text")
+  expect(parsed).to include("user")
+  expect(parsed).to include("proposer")
+  expect(parsed).to include("vote")
+  expect(parsed).to include("proposal_text")
 end
