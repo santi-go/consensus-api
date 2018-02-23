@@ -166,6 +166,7 @@ describe 'Vote endpoint'do
   end
 
   it 'send a json' do
+    stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
     proposal = Proposal.new(id_proposal: '1', proposer: Fixture::PROPOSER, involved: ['pepe@correo.es'], proposal: "Text of proposal", domain_link: Fixture::DOMAIN_LINK, consensus_email: Fixture::CONSENSUS_EMAIL)
     Repository::Proposals.save(proposal)
     body_sended = {
@@ -178,6 +179,7 @@ describe 'Vote endpoint'do
   end
 
   it 'checks if user has voted for a proposal yet' do
+    stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
     body_sended = {
       token: 'id_proposal=1&user=pepe@correo.es&vote=disensus'
     }
