@@ -18,16 +18,12 @@ module Repository
 
       def retrieve(id_proposal, user)
         result = []
-          @@repository_data.each do |vote|
-            if (vote.id_proposal == id_proposal && vote.user == user)
+        @@repository_data.each do |vote|
+          if (vote.id_proposal == id_proposal && vote.user == user)
                 result = vote
-            end
           end
-        if !(result)
-            return nil
-         else
-           return result
         end
+        return result
       end
 
       def count
@@ -46,7 +42,7 @@ module Repository
 
       def check_vote(vote)
         last_vote = retrieve(vote.id_proposal, vote.user)
-        if (last_vote == nil || last_vote == [])
+        if (last_vote == [])
           save(vote)
         else
           update(last_vote, vote.vote)
