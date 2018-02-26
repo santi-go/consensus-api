@@ -9,7 +9,7 @@ require_relative './system/models/vote'
 require_relative './system/json_validator'
 require_relative 'initializers/configure_mail_gem'
 require_relative './system/repositories/repository'
-require_relative './system/actions/vote'
+require_relative './system/actions/vote_action'
 require_relative './system/actions/create_proposal'
 
 class App < Sinatra::Base
@@ -30,7 +30,7 @@ class App < Sinatra::Base
 
   post '/vote-consensus' do
     params = JSON.parse(request.body.read)
-    response_to_invited = Actions::Votation.do(params)
+    response_to_invited = Actions::VoteAction.do(params)
     response_to_invited
   end
 

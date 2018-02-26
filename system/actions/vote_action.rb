@@ -1,7 +1,7 @@
 require_relative '../notify'
 
 module Actions
-  class Votation
+  class VoteAction
     class << self
       def do(params)
         token = params['token']
