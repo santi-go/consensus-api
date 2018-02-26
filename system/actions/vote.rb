@@ -19,11 +19,11 @@ module Actions
         notify_votation_state(retrieved_proposal, user)
 
         response_to_invited = {
-          :user => user,
-          :proposer => retrieved_proposal.proposer,
-          :vote => vote,
-          :proposal_text => retrieved_proposal.proposal,
-          :id_proposal => id_proposal
+          'user' => user,
+          'proposer' => retrieved_proposal.proposer,
+          'vote' => vote,
+          'proposal_text' => retrieved_proposal.proposal,
+          'id_proposal' => id_proposal
         }.to_json
         response_to_invited
       end
