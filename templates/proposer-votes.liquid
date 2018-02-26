@@ -21,24 +21,13 @@ font-weight: 400; width:100%; line-height:2em; text-align:center">
     <td style="padding: 5% 10%; border-top: 4px double #07889B;">
       <table border="0" cellpadding="0" cellspacing="0" width="100%">
         <tr>
-          <td style="font-size:1.6em;font-family: 'Varela Round', sans-serif;">
-            Welcome to Consensus
-            <br></br>
+          <td>
+            Hello {{ proposer }}
           </td>
         </tr>
         <tr>
           <td>
-            Hello {{ proposer }}.
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <p>You've created a consensus proposal.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <h2 style="margin-top: 2em; font-size:1.3em">This is the circle votation:</h2>
+            <h2 style="margin-top: 2em; font-size:1.3em">This is the votation status now:</h2>
             <div style="display: inline-block">
               <p style="margin: 1em 2em; width: fit-content; display: inline-block; font-weight: 900; color: #07889B;"><span style="display: block; font-size: 1.5rem; padding: 0 0.25rem; margin: 0 0.25rem; color: #07889B; border: 1px solid #07889B;">{{ total_consensus }}</span> in consensus</p>
             </div>
@@ -52,18 +41,23 @@ font-weight: 400; width:100%; line-height:2em; text-align:center">
         </tr>
         <tr>
           <td>
-            <p>This is your circle: {{ involved }}</p>
             <p>The last person who has vote is {{ last_voter }}</p>
           </td>
         </tr>
         <tr>
           <td style="display: block">
-            <h2 style="margin-top: 2em; font-size:1.3em">This is the proposal:</h2>
+            <h2 style="margin-top: 2em; font-size:1.3em">The proposal is:</h2>
           </td>
           <td bgcolor="#fff" style="border: 1px solid #07889B; display:block; padding: 1em;">
             <p>
               {{ proposal }}
             </p>
+          </td>
+
+        </tr>
+        <tr>
+          <td>
+            <p>from the circle: {{ involved }}</p>
           </td>
         </tr>
       </table>
