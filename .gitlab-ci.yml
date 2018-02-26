@@ -1,15 +1,31 @@
-image: tmaier/docker-compose:latest
-
-services:
-  - docker:dind
+variables:
+  PROJECT_GROUP: devscola
+  PROJECT_IMAGE_NAME: consensus-api
+  TAG: v0.2
 
 stages:
   - test
+  - build
+  - deploy
 
 test:
   stage: test
+  image: ruby:2.4.2
   before_script:
-    - docker-compose -f docker-compose.ci.yml up --build -d
+    - bundle install
   script:
-    - docker-compose -f docker-compose.ci.yml run api bundle exec rake test
-    - docker-compose -f docker-compose.ci.yml down
+    - bundle exec rake &
+    - bundle exec rake test
+
+build:
+  stage: build
+  image: tmaier/docker-compose:latest
+  services:
+    - docker:dind
+  before_script:
+    - rm -rf spec
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+  script:
+    - docker-compose -f docker-compose_ci.yml up --build -d
+    - docker commit $(docker ps -q) registry.gitlab.com/$PROJECT_GROUP/$PROJECT_IMAGE_NAME:$TAG
+    - docker push registry.gitlab.com/$PROJECT_GROUP/$PROJECT_IMAGE_NAME:$TAG

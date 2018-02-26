@@ -1,12 +1,9 @@
 FROM ruby:2.4.2
 
-WORKDIR /opt/consensus_api
+ENV API_PATH /consensus/api
+WORKDIR $API_PATH
+ADD . $API_PATH
 
-COPY Gemfile* /opt/consensus_api/
-RUN bundle install
+CMD bundle install && rerun --background -- rackup --port 80 -o 0.0.0.0
 
-COPY . /opt/consensus_api
-
-EXPOSE 4567
-
-CMD ["bundle", "exec", "rake", "start"]
+EXPOSE 80

@@ -1,12 +1,10 @@
-version: '3.2'
+version: '2.0'
 services:
   api:
     build: .
-    env_file:
-      password_mail.env
     volumes:
-      - type: bind
-        source: .
-        target: /opt/consensus_api/
-    ports:
-      - '4567:4567'
+      - '.:/consensus/api'
+
+volumes:
+  vol_api:
+    driver: local
