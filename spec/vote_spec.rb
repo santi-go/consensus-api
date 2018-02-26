@@ -6,7 +6,7 @@ describe 'Vote' do
   it 'saves a vote in a repository' do
     vote = Vote.new(id_proposal: Fixture::ID_PROPOSAL, user: Fixture::RECIPIENT, vote: Fixture::VOTE)
 
-    response = Repository::Votes.save(vote)
+    Repository::Votes.save(vote)
 
     expect(vote.id_proposal).to eq(Fixture::ID_PROPOSAL)
   end
@@ -41,4 +41,36 @@ describe 'Vote' do
     expect(total_voted).to eq(3)
   end
 
+  it 'belongs to an independent proposal' do
+    Repository::Votes.clear
+    first_proposal = Proposal.new(
+      proposer: Fixture::PROPOSER,
+      involved: Fixture::INVOLVED,
+      proposal: Fixture::PROPOSAL,
+      domain_link: Fixture::DOMAIN_LINK,
+      consensus_email: Fixture::CONSENSUS_EMAIL
+    )
+    second_proposal = Proposal.new(
+      proposer: Fixture::PROPOSER,
+      involved: Fixture::INVOLVED,
+      proposal: Fixture::SECOND_PROPOSAL,
+      domain_link: Fixture::DOMAIN_LINK,
+      consensus_email: Fixture::CONSENSUS_EMAIL
+    )
+ 
+    first_vote = Vote.new(id_proposal: first_proposal.id_proposal, user: 'uno', vote: 'consensus')
+    Repository::Votes.save(first_vote)
+    second_vote = Vote.new(id_proposal: second_proposal.id_proposal, user: 'uno', vote: 'disensus')
+    Repository::Votes.save(second_vote)
+ 
+    first_proposal_consensus_quantity = Repository::Votes.voted(first_proposal.id_proposal, 'consensus')
+    first_proposal_disensus_quantity = Repository::Votes.voted(first_proposal.id_proposal, 'disensus')
+    second_proposal_consensus_quantity = Repository::Votes.voted(second_proposal.id_proposal, 'consensus')
+    second_proposal_disensus_quantity = Repository::Votes.voted(second_proposal.id_proposal, 'disensus')
+ 
+    expect(first_proposal_consensus_quantity).to eq(1)
+    expect(first_proposal_disensus_quantity).to eq(0)
+    expect(second_proposal_consensus_quantity).to eq(0)
+    expect(second_proposal_disensus_quantity).to eq(1)
+  end
 end

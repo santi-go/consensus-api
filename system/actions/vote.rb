@@ -1,7 +1,9 @@
+require_relative '../notify'
+
 module Actions
   class Votation
     class << self
-      def do (params)
+      def do(params)
         token = params['token']
         array = token.split('&')
         array_params = []
@@ -14,14 +16,14 @@ module Actions
 
         retrieved_proposal = Repository::Proposals.retrieve(id_proposal)
         save_vote(id_proposal, user, vote)
-        notify_votation_state(retrieved_proposal[0], user)
+        notify_votation_state(retrieved_proposal, user)
 
         response_to_invited = {
-          :user => user.to_s,
-          :proposer => retrieved_proposal[0].proposer,
-          :vote => vote.to_s,
-          :proposal_text => retrieved_proposal[0].proposal,
-          :id_proposal => id_proposal.to_s
+          'user' => user,
+          'proposer' => retrieved_proposal.proposer,
+          'vote' => vote,
+          'proposal_text' => retrieved_proposal.proposal,
+          'id_proposal' => id_proposal
         }.to_json
         response_to_invited
       end

@@ -17,14 +17,13 @@ module Repository
       end
 
       def retrieve(id_proposal, user)
-        result = @@repository_data.each do |vote|
-          return vote if (vote.id_proposal == id_proposal && vote.user == user)
+        result = []
+        @@repository_data.each do |vote|
+          if (vote.id_proposal == id_proposal && vote.user == user)
+                result = vote
+          end
         end
-        if (result.length != 1)
-           return nil
-        else
-          return result
-        end
+        return result
       end
 
       def count
@@ -43,7 +42,7 @@ module Repository
 
       def check_vote(vote)
         last_vote = retrieve(vote.id_proposal, vote.user)
-        if (last_vote == nil || last_vote == [])
+        if (last_vote == [])
           save(vote)
         else
           update(last_vote, vote.vote)
@@ -63,9 +62,7 @@ module Repository
       end
 
       def votes_from_proposal(id_proposal)
-        @@repository_data.each do |vote|
-          vote.id_proposal == id_proposal
-        end
+        @@repository_data.select{|vote| vote.id_proposal == id_proposal}
       end
 
       def count_votes(id_proposal)
