@@ -11,7 +11,7 @@ module Actions
         hash = array_params.to_h
 
         user = hash['user']
-        vote = hash['vote']
+        vote = hash['decision']
         id_proposal = hash['id_proposal']
 
         retrieved_proposal = Repository::Proposals.retrieve(id_proposal)
@@ -21,7 +21,7 @@ module Actions
         response_to_invited = {
           'user' => user,
           'proposer' => retrieved_proposal.proposer,
-          'vote' => vote,
+          'decision' => vote,
           'proposal_text' => retrieved_proposal.proposal,
           'id_proposal' => id_proposal
         }.to_json
@@ -31,7 +31,7 @@ module Actions
       def save_vote(id_proposal, user, vote)
         new_vote = Vote.new(id_proposal: id_proposal,
                           user: user,
-                          vote: vote)
+                          decision: vote)
         Repository::Votes.check_vote(new_vote)
         new_vote
       end
