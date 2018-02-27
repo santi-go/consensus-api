@@ -3,7 +3,12 @@ require 'securerandom'
 class Proposal
   attr_reader :id_proposal, :proposer, :involved, :proposal, :domain_link, :consensus_email
 
-  def initialize(id_proposal: nil, proposer:, involved:, proposal:, domain_link:, consensus_email:)
+  def initialize(id_proposal: nil,
+      proposer:,
+      involved:,
+      proposal:,
+      domain_link: DOMAIN_LINK,
+      consensus_email: CONSENSUS_EMAIL)
     @id_proposal = check_id(id_proposal)
     @proposer = proposer
     @involved = involved

@@ -1,7 +1,7 @@
 require_relative '../notify'
 
 module Actions
-  class Votation
+  class VoteAction
     class << self
       def do(params)
         hash_params = prepare_params(params).to_h
@@ -19,12 +19,12 @@ module Actions
       def create_vote_response(hash_params)
         id_proposal = hash_params['id_proposal']
         user = hash_params['user']
-        vote = hash_params['vote']
+        vote = hash_params['decision']
 
         prepared_response = {
           'user' => user,
           'proposer' => 'HACKER MAN',
-          'vote' => 'OUTSIDE THE BALLOT BOX',
+          'decision' => 'OUTSIDE THE BALLOT BOX',
           'proposal_text' => 'DOES NOT EXIST ',
           'id_proposal' => id_proposal
         }
@@ -43,11 +43,11 @@ module Actions
 
         return prepared_response.to_json
       end
-      
+
       def save_vote(id_proposal, user, vote)
         new_vote = Vote.new(id_proposal: id_proposal,
                           user: user,
-                          vote: vote)
+                          decision: vote)
         Repository::Votes.check_vote(new_vote)
         new_vote
       end

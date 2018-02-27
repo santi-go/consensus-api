@@ -32,12 +32,12 @@ module Repository
 
       def consensus_list(id_proposal)
         list= @@repository_data.select{|vote| vote.id_proposal == id_proposal}
-        list.select{|vote| vote.vote == 'consensus'}
+        list.select{|vote| vote.decision == 'consensus'}
       end
 
       def disensus_list(id_proposal)
         list=@@repository_data.select{|vote| vote.id_proposal == id_proposal}
-        list.select{|vote| vote.vote == 'disensus'}
+        list.select{|vote| vote.decision == 'disensus'}
       end
 
       def check_vote(vote)
@@ -45,18 +45,18 @@ module Repository
         if (last_vote == [])
           save(vote)
         else
-          update(last_vote, vote.vote)
+          update(last_vote, vote.decision)
         end
       end
 
       def update(last_vote, decision)
-        last_vote.vote = decision
+        last_vote.decision = decision
       end
 
       def voted(id_proposal, voted)
         votes = 0
         votes_from_proposal(id_proposal).each do |vote|
-          (votes += 1) if vote.vote == voted
+          (votes += 1) if vote.decision == voted
         end
         votes
       end
