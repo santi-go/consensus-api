@@ -180,9 +180,12 @@ describe 'Vote endpoint'do
 
   it 'checks if user has voted for a proposal yet' do
     stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
+    proposal = Proposal.new(id_proposal: '1', proposer: Fixture::PROPOSER, involved: ['pepe@correo.es'], proposal: Fixture::PROPOSAL, domain_link: Fixture::DOMAIN_LINK, consensus_email: Fixture::CONSENSUS_EMAIL)
+    Repository::Proposals.save(proposal)
     body_sended = {
       token: 'id_proposal=1&user=pepe@correo.es&vote=disensus'
     }
+
     post '/vote-consensus', body_sended.to_json
     post '/vote-consensus', body_sended.to_json
 
@@ -190,7 +193,8 @@ describe 'Vote endpoint'do
   end
 
   it 'allows to update votes for the same proposal', :wip do
-    proposal = Proposal.new(id_proposal: 1, proposer: Fixture::PROPOSER, involved: ['pepe@correo.es'], proposal: Fixture::PROPOSAL, domain_link: Fixture::DOMAIN_LINK, consensus_email: Fixture::CONSENSUS_EMAIL)
+    stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
+    proposal = Proposal.new(id_proposal: '1', proposer: Fixture::PROPOSER, involved: ['pepe@correo.es'], proposal: Fixture::PROPOSAL, domain_link: Fixture::DOMAIN_LINK, consensus_email: Fixture::CONSENSUS_EMAIL)
     Repository::Proposals.save(proposal)
     body_sended = {
       token: 'id_proposal=1&user=pepe@correo.es&vote=disensus'
@@ -204,7 +208,7 @@ describe 'Vote endpoint'do
     expect(Repository::Votes.repository_data.first.vote).to eq('disensus')
 
     post '/vote-consensus', body_updated.to_json
-
+    
     expect(Repository::Votes.count).to eq(1)
     expect(Repository::Votes.repository_data.first.vote).to eq('consensus')
   end

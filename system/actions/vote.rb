@@ -4,30 +4,46 @@ module Actions
   class Votation
     class << self
       def do(params)
-        token = params['token']
-        array = token.split('&')
-        array_params = []
-        array.each {|element| array_params << element.split('=')}
-        hash = array_params.to_h
-
-        user = hash['user']
-        vote = hash['vote']
-        id_proposal = hash['id_proposal']
-
-        retrieved_proposal = Repository::Proposals.retrieve(id_proposal)
-        save_vote(id_proposal, user, vote)
-        notify_votation_state(retrieved_proposal, user)
-
-        response_to_invited = {
-          'user' => user,
-          'proposer' => retrieved_proposal.proposer,
-          'vote' => vote,
-          'proposal_text' => retrieved_proposal.proposal,
-          'id_proposal' => id_proposal
-        }.to_json
-        response_to_invited
+        hash_params = prepare_params(params).to_h
+        return create_vote_response(hash_params)
       end
 
+      def prepare_params(params)
+        token = params['token']
+        token_splitted = token.split('&')
+        array_params = []
+        token_splitted.each {|element| array_params << element.split('=')}
+        return array_params
+      end
+
+      def create_vote_response(hash_params)
+        id_proposal = hash_params['id_proposal']
+        user = hash_params['user']
+        vote = hash_params['vote']
+
+        prepared_response = {
+          'user' => user,
+          'proposer' => 'HACKER MAN',
+          'vote' => 'OUTSIDE THE BALLOT BOX',
+          'proposal_text' => 'DOES NOT EXIST ',
+          'id_proposal' => id_proposal
+        }
+
+        retrieved_proposal = Repository::Proposals.retrieve(id_proposal)
+
+        if !(retrieved_proposal == [])
+          prepared_response['proposer'] = retrieved_proposal.proposer
+          prepared_response['proposal'] = retrieved_proposal.proposal
+          user_is_included_in_proposal = Repository::Proposals.user_included?(id_proposal, user)
+          if (user_is_included_in_proposal == true)
+            save_vote(id_proposal, user, vote)
+            notify_votation_state(retrieved_proposal, user)
+          end
+        end
+
+        return prepared_response.to_json
+      end
+      
       def save_vote(id_proposal, user, vote)
         new_vote = Vote.new(id_proposal: id_proposal,
                           user: user,

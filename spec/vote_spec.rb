@@ -57,20 +57,50 @@ describe 'Vote' do
       domain_link: Fixture::DOMAIN_LINK,
       consensus_email: Fixture::CONSENSUS_EMAIL
     )
- 
+
     first_vote = Vote.new(id_proposal: first_proposal.id_proposal, user: 'uno', vote: 'consensus')
     Repository::Votes.save(first_vote)
     second_vote = Vote.new(id_proposal: second_proposal.id_proposal, user: 'uno', vote: 'disensus')
     Repository::Votes.save(second_vote)
- 
+
     first_proposal_consensus_quantity = Repository::Votes.voted(first_proposal.id_proposal, 'consensus')
     first_proposal_disensus_quantity = Repository::Votes.voted(first_proposal.id_proposal, 'disensus')
     second_proposal_consensus_quantity = Repository::Votes.voted(second_proposal.id_proposal, 'consensus')
     second_proposal_disensus_quantity = Repository::Votes.voted(second_proposal.id_proposal, 'disensus')
- 
+
     expect(first_proposal_consensus_quantity).to eq(1)
     expect(first_proposal_disensus_quantity).to eq(0)
     expect(second_proposal_consensus_quantity).to eq(0)
     expect(second_proposal_disensus_quantity).to eq(1)
+  end
+
+  it 'only if user is included in circle' do
+    Repository::Votes.clear
+    Repository::Proposals.clear
+    user = 'involved1@sample.com'
+    first_proposal = Proposal.new(
+      id_proposal: Fixture::ID_PROPOSAL,
+      proposer: Fixture::PROPOSER,
+      involved: ['proposer@sample.com', user],
+      proposal: Fixture::PROPOSAL,
+      domain_link: Fixture::DOMAIN_LINK,
+      consensus_email: Fixture::CONSENSUS_EMAIL
+    )
+    Repository::Proposals.save(first_proposal)
+    second_proposal = Proposal.new(
+      id_proposal: Fixture::SECOND_ID_PROPOSAL,
+      proposer: Fixture::PROPOSER,
+      involved: ['proposer@sample.com', 'involved2@sample.com'],
+      proposal: Fixture::SECOND_PROPOSAL,
+      domain_link: Fixture::DOMAIN_LINK,
+      consensus_email: Fixture::CONSENSUS_EMAIL
+    )
+    Repository::Proposals.save(second_proposal)
+
+    user_included_in_first_proposal = Repository::Proposals.user_included?(first_proposal.id_proposal, user)
+    user_included_in_second_proposal = Repository::Proposals.user_included?(second_proposal.id_proposal, user)
+
+    expect(user_included_in_first_proposal).to eq(true)
+    expect(user_included_in_second_proposal).to eq(false)
   end
 end
