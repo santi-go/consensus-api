@@ -33,7 +33,7 @@ class Notify
     def body_constructor(new_proposal, mail_to, template)
       encoded_list_consenso = Base64.encode64(encode('consenso', new_proposal, mail_to))
       encoded_list_disenso = Base64.encode64(encode('disenso', new_proposal, mail_to))
-
+      p encoded_list_disenso
       circle_beautified = beautify_list(circle(new_proposal.involved, new_proposal.proposer))
       consensus_body = template.render(
         'proposer' => new_proposal.proposer,
@@ -47,11 +47,7 @@ class Notify
     end
 
     def encode(vote, new_proposal, mail_to)
-      {
-        'id_proposal': new_proposal.id_proposal,
-        'recipient': mail_to,
-        'vote': vote
-      }.to_s
+      {'id_proposal': new_proposal.id_proposal,'recipient': mail_to,'vote': vote}.to_s
     end
 
     def beautify_list(list)

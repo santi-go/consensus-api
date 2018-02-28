@@ -136,15 +136,14 @@ describe 'Send mail endpoint' do
     end
   end
 
-  xit 'for involved that includes CTA for consensus and disensus' do
+  it 'for involved that includes CTA for consensus and disensus' do
     stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
     template = Fixture::TEMPLATE_INVOLVED
     recipient = Fixture::RECIPIENT
     proposal = Proposal.new(id_proposal: Fixture::ID_PROPOSAL, proposer: Fixture::PROPOSER, involved: Fixture::INVOLVED, proposal: Fixture::PROPOSAL, domain_link: Fixture::DOMAIN_LINK, consensus_email: Fixture::CONSENSUS_EMAIL)
 
-    consensus_link = proposal.domain_link + "id_proposal=" + proposal.id_proposal + "&user=" + recipient + '&vote=consensus'
-    disensus_link =  proposal.domain_link + "id_proposal=" + proposal.id_proposal + "&user=" + recipient + '&vote=disensus'
-
+    consensus_link = proposal.domain_link + "encode_list="
+    disensus_link =  proposal.domain_link + "encode_list="
     Notify.body_constructor(proposal, recipient, template)
     body_content = Notify.get_body
     expect(body_content).to include(consensus_link)
@@ -169,8 +168,12 @@ describe 'Vote endpoint'do
     proposal = Proposal.new(id_proposal: '1', proposer: Fixture::PROPOSER, involved: ['pepe@correo.es'], proposal: "Text of proposal", domain_link: Fixture::DOMAIN_LINK, consensus_email: Fixture::CONSENSUS_EMAIL)
     Repository::Proposals.save(proposal)
     body_sended = {
-      token: 'id_proposal=1&user=pepe@correo.es&vote=disensus'
+      token: 'id_proposal=1434141-12414-241577-5474&user=pepe@correo.es&vote=disensus'
     }
+
+    # body_sended = {
+    #   token: 'id_proposal=1434141-12414-241577-5474&user=pepe@correo.es&vote=disensus'
+    # }
 
     post '/vote-consensus', body_sended.to_json
 
@@ -179,7 +182,7 @@ describe 'Vote endpoint'do
 
   it 'checks if user has voted for a proposal yet' do
     body_sended = {
-      token: 'id_proposal=1&user=pepe@correo.es&vote=disensus'
+      token: 'id_proposal=1434141-12414-241577-5474&user=pepe@correo.es&vote=disensus'
     }
     post '/vote-consensus', body_sended.to_json
     post '/vote-consensus', body_sended.to_json

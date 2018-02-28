@@ -42,37 +42,38 @@ class App < Sinatra::Base
     200
   end
 
-  post '/vote-consensus' do
-    params = JSON.parse(request.body.read)
-    token = params['token']
-    token = token.split('=')
-    token = token[1]
-    decode_list = Base64.decode64(token)
-    p decode_list
-
-    array = token.split('&')
-    array_params = []
-    array.each {|element| array_params << element.split('=')}
-    hash = array_params.to_h
-
-    user = hash['user']
-    vote = hash['vote']
-    id_proposal = hash['id_proposal']
-    retrieved_proposal = Repository::Proposals.retrieve(id_proposal)
-    vote = Vote.new(id_proposal: id_proposal,
-                            user: user,
-                            vote: vote)
-    Repository::Votes.check_vote(vote)
-
-    generated_json = {
-      :user => user,
-      :proposer => retrieved_proposal.proposer,
-      :vote => vote.vote,
-      :proposal_text => retrieved_proposal.proposal,
-      :id_proposal => id_proposal
-    }.to_json
-    generated_json
-  end
+  # post '/vote-consensus' do
+  #   params = JSON.parse(request.body.read)
+  #   Actions::Votation.do(params)
+  #   token = params['token']
+  #   token = token.split('=')
+  #   token = token[1]
+  #   decode_list = Base64.decode64(token)
+  #   p decode_list
+  #
+  #   array = token.split('&')
+  #   array_params = []
+  #   array.each {|element| array_params << element.split('=')}
+  #   hash = array_params.to_h
+  #
+  #   user = hash['user']
+  #   vote = hash['vote']
+  #   id_proposal = hash['id_proposal']
+  #   retrieved_proposal = Repository::Proposals.retrieve(id_proposal)
+  #   vote = Vote.new(id_proposal: id_proposal,
+  #                           user: user,
+  #                           vote: vote)
+  #   Repository::Votes.check_vote(vote)
+  #
+  #   generated_json = {
+  #     :user => user,
+  #     :proposer => retrieved_proposal.proposer,
+  #     :vote => vote.vote,
+  #     :proposal_text => retrieved_proposal.proposal,
+  #     :id_proposal => id_proposal
+  #   }.to_json
+  #   generated_json
+  # end
 
   post '/votation-state' do
     Notify.votation_state

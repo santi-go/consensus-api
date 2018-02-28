@@ -3,6 +3,15 @@ module Actions
     class << self
       def do (params)
         token = params['token']
+        token = token.split('=')
+        token = token[1]
+        token = token.gsub('+','\n')
+        p token
+        p '----------------------------------'
+        decode_list = Base64.decode64(token << '=')
+        p decode_list
+
+        token = params['token']
         array = token.split('&')
         array_params = []
         array.each {|element| array_params << element.split('=')}
