@@ -5,7 +5,7 @@ module Actions
     class << self
       def do(params)
         hash_params = prepare_params(params).to_h
-        return create_vote_response(hash_params)
+        return result_of_vote(hash_params)
       end
 
       def prepare_params(params)
@@ -16,12 +16,12 @@ module Actions
         return array_params
       end
 
-      def create_vote_response(hash_params)
+      def result_of_vote(hash_params)
         id_proposal = hash_params['id_proposal']
         user = hash_params['user']
         vote = hash_params['decision']
 
-        prepared_response = {
+        default_response = {
           'user' => user,
           'proposer' => 'HACKER MAN',
           'decision' => 'OUTSIDE THE BALLOT BOX',
@@ -30,18 +30,19 @@ module Actions
         }
 
         retrieved_proposal = Repository::Proposals.retrieve(id_proposal)
-
-        if !(retrieved_proposal == [])
-          prepared_response['proposer'] = retrieved_proposal.proposer
-          prepared_response['proposal'] = retrieved_proposal.proposal
-          user_is_included_in_proposal = Repository::Proposals.user_included?(id_proposal, user)
-          if (user_is_included_in_proposal == true)
-            save_vote(id_proposal, user, vote)
-            notify_votation_state(retrieved_proposal, user)
-          end
+        user_is_included_in_proposal = Repository::Proposals.user_included?(id_proposal, user) if !(retrieved_proposal == [])
+        if (user_is_included_in_proposal == true)
+          create_response(retrieved_proposal, default_response, vote)
+          save_vote(retrieved_proposal.id_proposal, user, vote)
+          notify_votation_state(retrieved_proposal, user)
         end
+        return default_response.to_json
+      end
 
-        return prepared_response.to_json
+      def create_response(retrieved_proposal, default_response, vote)
+        default_response['proposer'] = retrieved_proposal.proposer
+        default_response['proposal_text'] = retrieved_proposal.proposal
+        default_response['decision'] = vote
       end
 
       def save_vote(id_proposal, user, vote)
