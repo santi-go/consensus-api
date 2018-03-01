@@ -22,24 +22,26 @@ module Actions
         vote = hash_params['decision']
 
         default_response = {
-          'user' => user,
-          'proposer' => 'HACKER MAN',
+          'user' => 'HACKER MAN',
+          'proposer' => 'NONE',
           'decision' => 'OUTSIDE THE BALLOT BOX',
           'proposal_text' => 'DOES NOT EXIST ',
-          'id_proposal' => id_proposal
+          'id_proposal' => 'NOTHING'
         }
 
         retrieved_proposal = Repository::Proposals.retrieve(id_proposal)
         user_is_included_in_proposal = Repository::Proposals.user_included?(id_proposal, user) if !(retrieved_proposal == [])
         if (user_is_included_in_proposal == true)
-          create_response(retrieved_proposal, default_response, vote)
+          create_response(retrieved_proposal, default_response, user, vote)
           save_vote(retrieved_proposal.id_proposal, user, vote)
           notify_votation_state(retrieved_proposal, user)
         end
         return default_response.to_json
       end
 
-      def create_response(retrieved_proposal, default_response, vote)
+      def create_response(retrieved_proposal, default_response, user, vote)
+        default_response['user'] = user
+        default_response['id_proposal'] = retrieved_proposal.id_proposal
         default_response['proposer'] = retrieved_proposal.proposer
         default_response['proposal_text'] = retrieved_proposal.proposal
         default_response['decision'] = vote
