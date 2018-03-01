@@ -1,3 +1,4 @@
+require 'base64'
 require_relative '../notify'
 
 module Actions
@@ -9,7 +10,7 @@ module Actions
       end
 
       def prepare_params(params)
-        token = params['token']
+        token = decode(params['token'])
         token_splitted = token.split('&')
         array_params = []
         token_splitted.each {|element| array_params << element.split('=')}
@@ -37,6 +38,10 @@ module Actions
           notify_votation_state(retrieved_proposal, user)
         end
         return default_response.to_json
+      end
+
+      def decode(token)
+        Base64.strict_decode64(token)
       end
 
       def create_response(retrieved_proposal, default_response, user, vote)

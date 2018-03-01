@@ -4,6 +4,7 @@ require 'rack/test'
 require_relative '../app.rb'
 require_relative 'test_support/fixture'
 require_relative 'test_support/doubles/mailer'
+require_relative '../system/notify'
 
 include Rack::Test::Methods
 
@@ -142,8 +143,10 @@ describe 'Send mail endpoint' do
     recipient = Fixture::RECIPIENT
     proposal = Proposal.new(id_proposal: Fixture::ID_PROPOSAL, proposer: Fixture::PROPOSER, involved: Fixture::INVOLVED, proposal: Fixture::PROPOSAL, domain_link: Fixture::DOMAIN_LINK, consensus_email: Fixture::CONSENSUS_EMAIL)
 
-    consensus_link = proposal.domain_link + "id_proposal=" + proposal.id_proposal + "&user=" + recipient + '&decision=consensus'
-    disensus_link =  proposal.domain_link + "id_proposal=" + proposal.id_proposal + "&user=" + recipient + '&decision=disensus'
+    token_consensus = Notify.encode("id_proposal=" + proposal.id_proposal + "&user=" + recipient + '&decision=consensus')
+    token_disensus = Notify.encode("id_proposal=" + proposal.id_proposal + "&user=" + recipient + '&decision=disensus')
+    consensus_link = proposal.domain_link + "token=" + token_consensus
+    disensus_link =  proposal.domain_link + "token=" + token_disensus
 
     Notify.body_constructor(proposal, recipient, template)
     body_content = Notify.get_body
@@ -182,9 +185,12 @@ describe 'Vote endpoint'do
     stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
     proposal = Proposal.new(id_proposal: '1', proposer: Fixture::PROPOSER, involved: ['pepe@correo.es'], proposal: Fixture::PROPOSAL, domain_link: Fixture::DOMAIN_LINK, consensus_email: Fixture::CONSENSUS_EMAIL)
     Repository::Proposals.save(proposal)
+
+    token = Notify.encode("id_proposal=1&user=pepe@correo.es&decision=disensus")
     body_sended = {
-      token: 'id_proposal=1&user=pepe@correo.es&decision=disensus'
+      token: token
     }
+
 
     post '/vote-consensus', body_sended.to_json
     post '/vote-consensus', body_sended.to_json
@@ -196,11 +202,14 @@ describe 'Vote endpoint'do
     stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
     proposal = Proposal.new(id_proposal: '1', proposer: Fixture::PROPOSER, involved: ['pepe@correo.es'], proposal: Fixture::PROPOSAL, domain_link: Fixture::DOMAIN_LINK, consensus_email: Fixture::CONSENSUS_EMAIL)
     Repository::Proposals.save(proposal)
+
+    token_disensus = Notify.encode('id_proposal=1&user=pepe@correo.es&decision=disensus')
     body_sended = {
-      token: 'id_proposal=1&user=pepe@correo.es&decision=disensus'
+      token: token_disensus
     }
+    token_consensus = Notify.encode('id_proposal=1&user=pepe@correo.es&decision=consensus')
     body_updated = {
-      token: 'id_proposal=1&user=pepe@correo.es&decision=consensus'
+      token: token_consensus
     }
 
     post '/vote-consensus', body_sended.to_json

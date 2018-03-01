@@ -1,3 +1,4 @@
+require 'base64'
 require 'liquid'
 
 require_relative 'communication'
@@ -16,6 +17,10 @@ class Notify
       end
     end
 
+    def encode(token)
+      Base64.strict_encode64(token)
+    end
+
     def circle(involved, proposer)
       involved.unshift(proposer)
       involved.uniq
@@ -30,8 +35,11 @@ class Notify
     end
 
     def body_constructor(new_proposal, mail_to, template)
+      string_for_token = 'id_proposal=' + new_proposal.id_proposal + '&user=' + mail_to + '&decision='
       circle_beautified = beautify_list(circle(new_proposal.involved, new_proposal.proposer))
       consensus_body = template.render(
+        'token_consensus' => encode(string_for_token + 'consensus'),
+        'token_disensus' => encode(string_for_token + 'disensus'),
         'proposer' => new_proposal.proposer,
         'involved' => circle_beautified,
         'id_proposal' => new_proposal.id_proposal,
