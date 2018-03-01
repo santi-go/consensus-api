@@ -10,8 +10,9 @@ module Actions
       end
 
       def prepare_params(params)
-        token = decode(params['token'])
-        token_splitted = token.split('&')
+        token = params['token']
+        token_uncoded = decode(token)
+        token_splitted = token_uncoded.split('&')
         array_params = []
         token_splitted.each {|element| array_params << element.split('=')}
         return array_params
@@ -33,7 +34,7 @@ module Actions
         retrieved_proposal = Repository::Proposals.retrieve(id_proposal)
         user_is_included_in_proposal = Repository::Proposals.user_included?(id_proposal, user) if !(retrieved_proposal == [])
         if (user_is_included_in_proposal == true)
-          create_response(retrieved_proposal, default_response, user, vote)
+          default_response = create_response(retrieved_proposal, user, vote)
           save_vote(retrieved_proposal.id_proposal, user, vote)
           notify_votation_state(retrieved_proposal, user)
         end
@@ -44,12 +45,14 @@ module Actions
         Base64.strict_decode64(token)
       end
 
-      def create_response(retrieved_proposal, default_response, user, vote)
-        default_response['user'] = user
-        default_response['id_proposal'] = retrieved_proposal.id_proposal
-        default_response['proposer'] = retrieved_proposal.proposer
-        default_response['proposal_text'] = retrieved_proposal.proposal
-        default_response['decision'] = vote
+      def create_response(retrieved_proposal, user, vote)
+        return {
+          'user' => user,
+          'proposer' => retrieved_proposal.proposer,
+          'decision' => vote,
+          'proposal_text' => retrieved_proposal.proposal,
+          'id_proposal' => retrieved_proposal.id_proposal
+        }
       end
 
       def save_vote(id_proposal, user, vote)

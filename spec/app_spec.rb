@@ -156,7 +156,7 @@ describe 'Send mail endpoint' do
 
 end
 
-describe 'Vote endpoint'do
+describe 'Vote endpoint' do
 
   before(:each) do
     Repository::Votes.clear
@@ -172,8 +172,9 @@ describe 'Vote endpoint'do
     stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
     proposal = Proposal.new(id_proposal: '1', proposer: Fixture::PROPOSER, involved: ['pepe@correo.es'], proposal: "Text of proposal", domain_link: Fixture::DOMAIN_LINK, consensus_email: Fixture::CONSENSUS_EMAIL)
     Repository::Proposals.save(proposal)
+    token = Notify.encode("id_proposal=1&user=pepe@correo.es&decision=disensus")
     body_sended = {
-      token: 'id_proposal=1&user=pepe@correo.es&decision=disensus'
+      token: token
     }
 
     post '/vote-consensus', body_sended.to_json
@@ -185,12 +186,10 @@ describe 'Vote endpoint'do
     stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
     proposal = Proposal.new(id_proposal: '1', proposer: Fixture::PROPOSER, involved: ['pepe@correo.es'], proposal: Fixture::PROPOSAL, domain_link: Fixture::DOMAIN_LINK, consensus_email: Fixture::CONSENSUS_EMAIL)
     Repository::Proposals.save(proposal)
-
     token = Notify.encode("id_proposal=1&user=pepe@correo.es&decision=disensus")
     body_sended = {
       token: token
     }
-
 
     post '/vote-consensus', body_sended.to_json
     post '/vote-consensus', body_sended.to_json
