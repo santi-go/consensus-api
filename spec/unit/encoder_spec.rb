@@ -1,11 +1,12 @@
-require 'base64'
+require_relative '../../system/notify'
+require_relative '../../system/actions/vote_action'
 
 describe "Encoder" do
   it 'recovers encoded string' do
     origin="one string"
 
-    encoded = encode_string(origin)
-    decoded = decode_string(encoded)
+    encoded = Notify.encode(origin)
+    decoded = Actions::VoteAction.decode(encoded)
 
     expect(decoded).to eq(origin)
   end
@@ -13,7 +14,7 @@ describe "Encoder" do
   it 'encodes string' do
     origin="one string"
 
-    encoded =encode_string(origin)
+    encoded = Notify.encode(origin)
 
     expect(encoded).not_to eq(origin)
   end
@@ -21,17 +22,8 @@ describe "Encoder" do
   it 'encodes with base64' do
     origin = "one string"
 
-    encoded = encode_string(origin)
+    encoded = Notify.encode(origin)
 
     expect(encoded).to eq("b25lIHN0cmluZw==")
   end
-end
-
-
-def encode_string (text)
-  Base64.strict_encode64(text)
-end
-
-def decode_string (text)
-  Base64.strict_decode64(text)
 end
