@@ -38,8 +38,8 @@ class Notify
       string_for_token = 'id_proposal=' + new_proposal.id_proposal + '&user=' + mail_to + '&decision='
       circle_beautified = beautify_list(circle(new_proposal.involved, new_proposal.proposer))
       consensus_body = template.render(
-        'link_consensus' => new_proposal.domain_link + 'token=' + encode(string_for_token + 'consensus'),
-        'link_disensus' => new_proposal.domain_link + 'token=' + encode(string_for_token + 'disensus'),
+        'link_consensus' => new_proposal.domain_link + encode(string_for_token + 'consensus'),
+        'link_disensus' => new_proposal.domain_link + encode(string_for_token + 'disensus'),
         'proposer' => new_proposal.proposer,
         'involved' => circle_beautified,
         'id_proposal' => new_proposal.id_proposal,

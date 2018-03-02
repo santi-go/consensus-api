@@ -145,8 +145,8 @@ describe 'Send mail endpoint' do
 
     token_consensus = Notify.encode("id_proposal=" + proposal.id_proposal + "&user=" + recipient + '&decision=consensus')
     token_disensus = Notify.encode("id_proposal=" + proposal.id_proposal + "&user=" + recipient + '&decision=disensus')
-    consensus_link = proposal.domain_link + "token=" + token_consensus
-    disensus_link =  proposal.domain_link + "token=" + token_disensus
+    consensus_link = proposal.domain_link + token_consensus
+    disensus_link =  proposal.domain_link + token_disensus
 
     Notify.body_constructor(proposal, recipient, template)
     body_content = Notify.get_body
