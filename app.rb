@@ -24,6 +24,12 @@ class App < Sinatra::Base
     response.headers['Access-Control-Allow-Origin'] = '*'
   end
 
+  set :public_folder, 'public'
+
+  get '/' do
+    redirect 'index.html'
+  end
+
   post '/create-proposal' do
     params = JSON.parse(request.body.read)
     return status 422 if !(JSONValidator.validate_create_proposal?(params))
