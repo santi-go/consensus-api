@@ -5,6 +5,7 @@ gem 'sinatra', '~> 2.0.0'
 gem 'mail', '~> 2.7.0'
 gem 'sinatra-cross_origin', '~> 0.4.0'
 gem 'liquid', '~> 4.0.0'
+gem 'mongo', '~> 2.5'
 
 group :development do
   gem 'rake', '~> 12.3.0'

@@ -10,3 +10,12 @@ services:
         target: /opt/consensus_api/
     ports:
       - '4567:4567'
+    links:
+      - mongo
+
+  mongo:
+    image: mongo
+    environment:
+      - AUTH=no
+    ports:
+      - 27017:27017

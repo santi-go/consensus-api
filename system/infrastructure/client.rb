@@ -1,24 +1,30 @@
+require 'mongo'
+
 module Infrastructure
   class Client
     class << self
-      @repository_data ||= []
-
       def insert_one(document)
-        @repository_data << document
+        collection.insert_one(document)
       end
 
       def find_one(id)
-        result = []
-        @repository_data.each do |document|
-          if document[:id_proposal] == id
-            result = document
-          end
-        end
-        return result
+        collection.find(id_proposal: id).first
       end
 
       def flush
-        @repository_data = []
+        collection.drop
+      end
+
+      private
+
+      def client
+        Mongo::Logger.logger.level = Logger::INFO
+
+        @client ||= Mongo::Client.new('mongodb://mongo:27017/db')
+      end
+
+      def collection
+        client[:proposals]
       end
     end
   end

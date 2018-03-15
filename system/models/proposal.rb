@@ -5,12 +5,12 @@ class Proposal
 
   def self.from_document(document)
     Proposal.new(
-      id_proposal: document[:id_proposal],
-      proposer: document[:proposer],
-      involved: document[:involved],
-      proposal: document[:proposal],
-      domain_link: document[:domain_link],
-      consensus_email: document[:consensus_email]
+      id_proposal: document['id_proposal'],
+      proposer: document['proposer'],
+      involved: document['involved'],
+      proposal: document['proposal'],
+      domain_link: document['domain_link'],
+      consensus_email: document['consensus_email']
     )
   end
 
