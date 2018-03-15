@@ -1,5 +1,5 @@
 class Fixture
-  TEMPLATE_INVOLVED = Liquid::Template.parse(File.read("./templates/involved.liquid"))
+  TEMPLATE_INVOLVED = Liquid::Template.parse(File.read("./templates/notification.liquid"))
   PROPOSER = 'proposer@sample.com'
   INVOLVED = ['proposer@sample.com', 'involved1@sample.com', 'involved2@sample.com']
   PROPOSAL = 'Its a sample proposal'

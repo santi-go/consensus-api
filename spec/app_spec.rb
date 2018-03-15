@@ -139,16 +139,16 @@ describe 'Send mail endpoint' do
 
   it 'for involved that includes CTA for consensus and disensus' do
     stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
-    template = Fixture::TEMPLATE_INVOLVED
     recipient = Fixture::RECIPIENT
     proposal = Proposal.new(id_proposal: Fixture::ID_PROPOSAL, proposer: Fixture::PROPOSER, involved: Fixture::INVOLVED, proposal: Fixture::PROPOSAL, domain_link: Fixture::DOMAIN_LINK, consensus_email: Fixture::CONSENSUS_EMAIL)
+    receiver = Notify.select_receiver(recipient, proposal.proposer)
 
     token_consensus = Notify.encode("id_proposal=" + proposal.id_proposal + "&user=" + recipient + '&decision=consensus')
     token_disensus = Notify.encode("id_proposal=" + proposal.id_proposal + "&user=" + recipient + '&decision=disensus')
     consensus_link = proposal.domain_link + token_consensus
     disensus_link =  proposal.domain_link + token_disensus
 
-    Notify.body_constructor(proposal, recipient, template)
+    Notify.body_constructor(proposal, recipient, receiver)
     body_content = Notify.get_body
     expect(body_content).to include(consensus_link)
     expect(body_content).to include(disensus_link)
