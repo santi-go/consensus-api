@@ -11,8 +11,8 @@ class Notify
       consensus_subject = Subject.create(new_proposal.proposal)
 
       consensus_to.each do |mail_to|
-        template = select_template(mail_to, new_proposal.proposer)
-        consensus_body = body_constructor(new_proposal, mail_to, template)
+        receiver = select_receiver(mail_to, new_proposal.proposer)
+        consensus_body = body_constructor(new_proposal, mail_to, receiver)
         Communication.deliver(new_proposal.consensus_email, mail_to, consensus_subject, consensus_body)
       end
     end
@@ -26,18 +26,20 @@ class Notify
       involved.uniq
     end
 
-    def select_template(recipient, proposer)
+    def select_receiver(recipient, proposer)
       if recipient == proposer
-        Liquid::Template.parse(File.read("./templates/proposer.liquid"))
+        'proposer'
       else
-        Liquid::Template.parse(File.read("./templates/involved.liquid"))
+        'involved'
       end
     end
 
-    def body_constructor(new_proposal, mail_to, template)
+    def body_constructor(new_proposal, mail_to, receiver)
+      template = Liquid::Template.parse(File.read("./templates/notification.liquid"))
       string_for_token = 'id_proposal=' + new_proposal.id_proposal + '&user=' + mail_to + '&decision='
       circle_beautified = beautify_list(circle(new_proposal.involved, new_proposal.proposer))
       consensus_body = template.render(
+        'receiver' => receiver,
         'link_consensus' => new_proposal.domain_link + encode(string_for_token + 'consensus'),
         'link_disensus' => new_proposal.domain_link + encode(string_for_token + 'disensus'),
         'proposer' => new_proposal.proposer,
