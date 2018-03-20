@@ -25,11 +25,7 @@ module Repository
         end
         return result
       end
-
-      def count
-        @@repository_data.count
-      end
-
+      
       def consensus_list(id_proposal)
         list= @@repository_data.select{|vote| vote.id_proposal == id_proposal}
         list.select{|vote| vote.decision == 'consensus'}
