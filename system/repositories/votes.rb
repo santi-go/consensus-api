@@ -26,17 +26,11 @@ module Repository
         return result
       end
 
-      def consensus_list(id_proposal)
-        list= @@repository_data.select{|vote| vote.id_proposal == id_proposal}
-        list.select{|vote| vote.decision == 'consensus'}
+      def update(last_vote, decision)
+        last_vote.decision = decision
       end
 
-      def disensus_list(id_proposal)
-        list=@@repository_data.select{|vote| vote.id_proposal == id_proposal}
-        list.select{|vote| vote.decision == 'disensus'}
-      end
-
-      def check_vote(vote)
+      def save_or_update(vote)
         last_vote = retrieve(vote.id_proposal, vote.user)
         if (last_vote == [])
           save(vote)
@@ -45,16 +39,23 @@ module Repository
         end
       end
 
-      def update(last_vote, decision)
-        last_vote.decision = decision
+      def consensus_list(id_proposal)
+        votes_from_proposal(id_proposal).select{|vote| vote.decision == 'consensus'}
       end
 
+      def disensus_list(id_proposal)
+        votes_from_proposal(id_proposal).select{|vote| vote.decision == 'disensus'}
+      end
+
+
       def voted(id_proposal, voted)
-        votes = 0
-        votes_from_proposal(id_proposal).each do |vote|
-          (votes += 1) if vote.decision == voted
+        if (voted == 'consensus')
+          return consensus_list(id_proposal).count
         end
-        votes
+
+        if (voted == 'disensus')
+          return disensus_list(id_proposal).count
+        end
       end
 
       def count_votes(id_proposal)
@@ -66,6 +67,9 @@ module Repository
       def votes_from_proposal(id_proposal)
         @@repository_data.select{|vote| vote.id_proposal == id_proposal}
       end
+
+
+
     end
   end
 end

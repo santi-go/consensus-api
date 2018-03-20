@@ -59,7 +59,7 @@ module Actions
         new_vote = Vote.new(id_proposal: id_proposal,
                           user: user,
                           decision: vote)
-        Repository::Votes.check_vote(new_vote)
+        Repository::Votes.save_or_update(new_vote)
         new_vote
       end
 
