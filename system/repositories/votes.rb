@@ -58,15 +58,11 @@ module Repository
       end
 
       def count_votes(id_proposal)
-        votes = 0
-        @@repository_data.each do |vote|
-          (votes += 1) if vote.id_proposal == id_proposal
-        end
-        votes
+        votes_from_proposal(id_proposal).count
       end
 
       private
-      
+
       def votes_from_proposal(id_proposal)
         @@repository_data.select{|vote| vote.id_proposal == id_proposal}
       end
