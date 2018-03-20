@@ -18,9 +18,10 @@ module Infrastructure
       private
 
       def client
+        mongo_uri = ENV['MONGODB_URI']
         Mongo::Logger.logger.level = Logger::INFO
 
-        @client ||= Mongo::Client.new('mongodb://mongo:27017/db')
+        @client ||= Mongo::Client.new(mongo_uri)
       end
 
       def collection

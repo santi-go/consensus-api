@@ -3,6 +3,7 @@ services:
   api:
     build: .
     environment:
+      - MONGODB_URI=mongodb://mongo:27017/db
       - KEY='fake'
     links:
       - mongo
