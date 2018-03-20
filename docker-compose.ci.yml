@@ -2,5 +2,14 @@ version: '3.2'
 services:
   api:
     build: .
-    environment: 
+    environment:
       - KEY='fake'
+    links:
+      - mongo
+
+  mongo:
+    image: mongo
+    environment:
+      - AUTH=no
+    ports:
+      - 27017:27017
