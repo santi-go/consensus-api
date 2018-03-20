@@ -8,4 +8,13 @@ class Vote
     @decision = decision
     @date = Time.now.strftime("%d/%m/%Y - %T")
   end
+
+  def serialize
+    {
+      id_proposal: @id_proposal,
+      user: @user,
+      decision: @decision,
+      date: @date
+    }
+  end
 end

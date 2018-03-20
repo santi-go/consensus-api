@@ -66,8 +66,8 @@ class Notify
       subject = Subject.create(proposal.proposal)
       circle_beautified = beautify_list(circle(proposal.involved, proposal.proposer))
       template = Liquid::Template.parse(File.read("./templates/proposer-votes.liquid"))
-      consensus_votes = Repository::Votes.voted(proposal.id_proposal, 'consensus')
-      disensus_votes = Repository::Votes.voted(proposal.id_proposal, 'disensus')
+      consensus_votes = Repository::Votes.consensus_count(proposal.id_proposal)
+      disensus_votes = Repository::Votes.disensus_count(proposal.id_proposal)
       body = template.render(
         'proposer' => mail_to,
         'involved' => circle_beautified,

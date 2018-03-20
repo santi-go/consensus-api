@@ -34,9 +34,9 @@ describe 'Vote' do
     vote3 = Vote.new(id_proposal: Fixture::ID_PROPOSAL, user: 'tres', decision: 'disensus')
     Repository::Votes.save(vote3)
 
-    total_voted = Repository::Votes.count_votes(Fixture::ID_PROPOSAL)
-    voted_consensus = Repository::Votes.voted(Fixture::ID_PROPOSAL, 'consensus')
-    voted_disensus = Repository::Votes.voted(Fixture::ID_PROPOSAL, 'disensus')
+    total_voted = Repository::Votes.votes_from_proposal(Fixture::ID_PROPOSAL).count
+    voted_consensus = Repository::Votes.consensus_count(Fixture::ID_PROPOSAL)
+    voted_disensus = Repository::Votes.disensus_count(Fixture::ID_PROPOSAL)
     expect(voted_consensus).to eq(2)
     expect(voted_disensus).to eq(1)
     expect(total_voted).to eq(3)
@@ -64,10 +64,10 @@ describe 'Vote' do
     second_vote = Vote.new(id_proposal: second_proposal.id_proposal, user: 'uno', decision: 'disensus')
     Repository::Votes.save(second_vote)
 
-    first_proposal_consensus_quantity = Repository::Votes.voted(first_proposal.id_proposal, 'consensus')
-    first_proposal_disensus_quantity = Repository::Votes.voted(first_proposal.id_proposal, 'disensus')
-    second_proposal_consensus_quantity = Repository::Votes.voted(second_proposal.id_proposal, 'consensus')
-    second_proposal_disensus_quantity = Repository::Votes.voted(second_proposal.id_proposal, 'disensus')
+    first_proposal_consensus_quantity = Repository::Votes.consensus_count(first_proposal.id_proposal)
+    first_proposal_disensus_quantity = Repository::Votes.disensus_count(first_proposal.id_proposal)
+    second_proposal_consensus_quantity = Repository::Votes.consensus_count(second_proposal.id_proposal)
+    second_proposal_disensus_quantity = Repository::Votes.disensus_count(second_proposal.id_proposal)
 
     expect(first_proposal_consensus_quantity).to eq(1)
     expect(first_proposal_disensus_quantity).to eq(0)
