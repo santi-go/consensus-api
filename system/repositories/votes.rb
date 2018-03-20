@@ -25,7 +25,7 @@ module Repository
         end
         return result
       end
-      
+
       def consensus_list(id_proposal)
         list= @@repository_data.select{|vote| vote.id_proposal == id_proposal}
         list.select{|vote| vote.decision == 'consensus'}
@@ -57,16 +57,18 @@ module Repository
         votes
       end
 
-      def votes_from_proposal(id_proposal)
-        @@repository_data.select{|vote| vote.id_proposal == id_proposal}
-      end
-
       def count_votes(id_proposal)
         votes = 0
         @@repository_data.each do |vote|
           (votes += 1) if vote.id_proposal == id_proposal
         end
         votes
+      end
+
+      private
+      
+      def votes_from_proposal(id_proposal)
+        @@repository_data.select{|vote| vote.id_proposal == id_proposal}
       end
     end
   end
