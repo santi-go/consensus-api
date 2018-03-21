@@ -30,16 +30,6 @@ module Repository
         change_vote = retrieve(last_vote.id_proposal, last_vote.user)
         change_vote.decision = decision
       end
-      #
-      # def voted(id_proposal, voted)
-      #   if (voted == 'consensus')
-      #     return consensus_list(id_proposal).count
-      #   end
-      #
-      #   if (voted == 'disensus')
-      #     return disensus_list(id_proposal).count
-      #   end
-      # end
 
       def consensus_count(id_proposal)
         consensus_list(id_proposal).count
