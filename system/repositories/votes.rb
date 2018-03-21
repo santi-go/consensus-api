@@ -48,15 +48,11 @@ module Repository
       def disensus_count(id_proposal)
         disensus_list(id_proposal).count
       end
-      #
-      # def count_votes(id_proposal)
-      #   votes_from_proposal(id_proposal).count
-      # end
 
       def votes_from_proposal(id_proposal)
         @repository_data.select{|vote| vote.id_proposal == id_proposal}
       end
-      
+
       def save_or_update(vote)
         last_vote = retrieve(vote.id_proposal, vote.user)
         if (last_vote == [])
