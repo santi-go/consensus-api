@@ -4,6 +4,14 @@ require_relative '../system/models/vote'
 require_relative 'test_support/fixture'
 
 describe 'Vote' do
+  before(:each) do
+    Repository::Votes.clear
+  end
+
+  after(:each) do
+    Repository::Votes.clear
+  end
+
   it 'saves a vote in a repository' do
     vote = Vote.new(id_proposal: Fixture::ID_PROPOSAL, user: Fixture::RECIPIENT, decision: Fixture::VOTE)
 

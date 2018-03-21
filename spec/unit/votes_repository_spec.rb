@@ -2,7 +2,7 @@ require_relative '../../system/models/vote'
 require_relative '../../system/repositories/votes'
 require_relative '../test_support/fixture'
 
-describe 'Votes repository' , :unitarios do
+describe 'Votes repository' do
   before(:each) do
     Repository::Votes.clear
   end

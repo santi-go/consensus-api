@@ -43,15 +43,6 @@ module Repository
         @repository_data.select{|vote| vote.id_proposal == id_proposal}
       end
 
-      def save_or_update(vote)
-        last_vote = retrieve(vote.id_proposal, vote.user)
-        if (last_vote == [])
-          save(vote)
-        else
-          update(last_vote, vote.decision)
-        end
-      end
-
       private
 
       def consensus_list(id_proposal)
