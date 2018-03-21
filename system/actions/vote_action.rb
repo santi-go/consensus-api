@@ -34,7 +34,7 @@ module Actions
         user_is_included_in_proposal = Repository::Proposals.user_included?(id_proposal, user) if !(retrieved_proposal == [])
         if (user_is_included_in_proposal == true)
           default_response = create_response(retrieved_proposal, user, decision)
-          save_vote(retrieved_proposal.id_proposal, user, decision)
+          vote(retrieved_proposal.id_proposal, user, decision)
           notify_votation_state(retrieved_proposal, user)
         end
         return default_response.to_json
@@ -50,11 +50,11 @@ module Actions
         }
       end
 
-      def save_vote(id_proposal, user, decision)
+      def vote(id_proposal, user, decision)
         voted = create_the_vote(id_proposal, user, decision)
-        last_vote = retrieve_the_vote(voted)
-        return save_the_vote(voted) if (last_vote == [])
-        update_the_vote(last_vote, voted.decision)
+        the_vote = retrieve_the_vote(voted)
+        return save_the_vote(voted) if (the_vote == [])
+        update_the_vote(the_vote, voted.decision)
       end
 
       def notify_votation_state(retrieved_proposal, user)
