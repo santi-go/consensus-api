@@ -5,6 +5,7 @@ require 'json'
 
 require_relative 'initializers/configure_mail_gem'
 require_relative 'initializers/clients'
+require_relative './system/helpers/enigma'
 require_relative './system/notify'
 require_relative './system/models/proposal'
 require_relative './system/models/vote'
@@ -38,8 +39,11 @@ class App < Sinatra::Base
 
   post '/vote-consensus' do
     params = JSON.parse(request.body.read)
-    response_to_invited = Actions::VoteAction.do(params)
-    response_to_invited
+    param_list = extract_from(params['token']).to_h
+    id_proposal = param_list['id_proposal']
+    user = param_list['user']
+    decision = param_list['decision']
+    Actions::VoteAction.do(id_proposal, user, decision)
   end
 
   options "*" do
@@ -47,5 +51,15 @@ class App < Sinatra::Base
     response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type, Accept, X-User-Email, X-Auth-Token"
     response.headers["Access-Control-Allow-Origin"] = "*"
     200
+  end
+
+  private
+
+  def extract_from(params)
+    token = Enigma.decode(params)
+    token_splitted = token.split('&')
+    param_list = []
+    token_splitted.each {|element| param_list << element.split('=')}
+    return param_list
   end
 end

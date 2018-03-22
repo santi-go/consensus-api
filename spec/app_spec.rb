@@ -144,8 +144,8 @@ describe 'Send mail endpoint' do
     proposal = Proposal.new(id_proposal: Fixture::ID_PROPOSAL, proposer: Fixture::PROPOSER, involved: Fixture::INVOLVED, proposal: Fixture::PROPOSAL, domain_link: Fixture::DOMAIN_LINK, consensus_email: Fixture::CONSENSUS_EMAIL)
     receiver = Notify.select_receiver(recipient, proposal.proposer)
 
-    token_consensus = Notify.encode("id_proposal=" + proposal.id_proposal + "&user=" + recipient + '&decision=consensus')
-    token_disensus = Notify.encode("id_proposal=" + proposal.id_proposal + "&user=" + recipient + '&decision=disensus')
+    token_consensus = Enigma.encode("id_proposal=" + proposal.id_proposal + "&user=" + recipient + '&decision=consensus')
+    token_disensus = Enigma.encode("id_proposal=" + proposal.id_proposal + "&user=" + recipient + '&decision=disensus')
     consensus_link = proposal.domain_link + token_consensus
     disensus_link =  proposal.domain_link + token_disensus
 
@@ -173,7 +173,7 @@ describe 'Vote endpoint' do
     stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
     proposal = Proposal.new(id_proposal: '1', proposer: Fixture::PROPOSER, involved: ['pepe@correo.es'], proposal: "Text of proposal", domain_link: Fixture::DOMAIN_LINK, consensus_email: Fixture::CONSENSUS_EMAIL)
     Repository::Proposals.save(proposal)
-    token = Notify.encode("id_proposal=1&user=pepe@correo.es&decision=disensus")
+    token = Enigma.encode("id_proposal=1&user=pepe@correo.es&decision=disensus")
     body_sended = {
       token: token
     }
@@ -187,7 +187,7 @@ describe 'Vote endpoint' do
     stub_const('Notifications::Mailer', TestSupport::Doubles::Mailer)
     proposal = Proposal.new(id_proposal: '1', proposer: Fixture::PROPOSER, involved: ['pepe@correo.es'], proposal: Fixture::PROPOSAL, domain_link: Fixture::DOMAIN_LINK, consensus_email: Fixture::CONSENSUS_EMAIL)
     Repository::Proposals.save(proposal)
-    token = Notify.encode("id_proposal=1&user=pepe@correo.es&decision=disensus")
+    token = Enigma.encode("id_proposal=1&user=pepe@correo.es&decision=disensus")
     body_sended = {
       token: token
     }
@@ -206,7 +206,7 @@ describe 'Vote endpoint' do
     proposal = Proposal.new(id_proposal: '1', proposer: Fixture::PROPOSER, involved: ['pepe@correo.es'], proposal: Fixture::PROPOSAL, domain_link: Fixture::DOMAIN_LINK, consensus_email: Fixture::CONSENSUS_EMAIL)
     Repository::Proposals.save(proposal)
 
-    token_disensus = Notify.encode('id_proposal=1&user=pepe@correo.es&decision=disensus')
+    token_disensus = Enigma.encode('id_proposal=1&user=pepe@correo.es&decision=disensus')
     body_disensus = {
       token: token_disensus
     }
@@ -214,7 +214,7 @@ describe 'Vote endpoint' do
     retrieve_first_vote = Repository::Votes.retrieve('1', 'pepe@correo.es')
     expect(retrieve_first_vote.decision).to eq('disensus')
 
-    token_consensus = Notify.encode('id_proposal=1&user=pepe@correo.es&decision=consensus')
+    token_consensus = Enigma.encode('id_proposal=1&user=pepe@correo.es&decision=consensus')
     body_consensus = {
       token: token_consensus
     }

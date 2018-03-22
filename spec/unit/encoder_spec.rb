@@ -1,12 +1,13 @@
 require_relative '../../system/notify'
 require_relative '../../system/actions/vote_action'
+require_relative '../../system/helpers/enigma'
 
 describe "Encoder" do
   it 'recovers encoded string' do
     origin="one string"
 
-    encoded = Notify.encode(origin)
-    decoded = Actions::VoteAction.decode(encoded)
+    encoded = Enigma.encode(origin)
+    decoded = Enigma.decode(encoded)
 
     expect(decoded).to eq(origin)
   end
@@ -14,7 +15,7 @@ describe "Encoder" do
   it 'encodes string' do
     origin="one string"
 
-    encoded = Notify.encode(origin)
+    encoded = Enigma.encode(origin)
 
     expect(encoded).not_to eq(origin)
   end
@@ -22,7 +23,7 @@ describe "Encoder" do
   it 'encodes with base64' do
     origin = "one string"
 
-    encoded = Notify.encode(origin)
+    encoded = Enigma.encode(origin)
 
     expect(encoded).to eq("b25lIHN0cmluZw==")
   end

@@ -17,10 +17,6 @@ class Notify
       end
     end
 
-    def encode(token)
-      Enigma.encode(token)
-    end
-
     def circle(involved, proposer)
       involved.unshift(proposer)
       involved.uniq
@@ -40,8 +36,8 @@ class Notify
       circle_beautified = beautify_list(circle(new_proposal.involved, new_proposal.proposer))
       consensus_body = template.render(
         'receiver' => receiver,
-        'link_consensus' => new_proposal.domain_link + encode(string_for_token + 'consensus'),
-        'link_disensus' => new_proposal.domain_link + encode(string_for_token + 'disensus'),
+        'link_consensus' => new_proposal.domain_link + Enigma.encode(string_for_token + 'consensus'),
+        'link_disensus' => new_proposal.domain_link + Enigma.encode(string_for_token + 'disensus'),
         'proposer' => new_proposal.proposer,
         'involved' => circle_beautified,
         'id_proposal' => new_proposal.id_proposal,
