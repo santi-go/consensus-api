@@ -1,6 +1,6 @@
-require 'base64'
 require_relative '../notify'
 require_relative '../repositories/votes'
+require_relative '../helpers/enigma'
 
 module Actions
   class VoteAction
@@ -60,7 +60,7 @@ module Actions
       end
 
       def decode(token)
-        Base64.strict_decode64(token)
+        Enigma.decode(token)
       end
     end
   end

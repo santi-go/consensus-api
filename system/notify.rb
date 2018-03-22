@@ -1,6 +1,6 @@
-require 'base64'
 require 'liquid'
 
+require_relative './helpers/enigma'
 require_relative 'communication'
 require_relative 'subject'
 
@@ -18,7 +18,7 @@ class Notify
     end
 
     def encode(token)
-      Base64.strict_encode64(token)
+      Enigma.encode(token)
     end
 
     def circle(involved, proposer)
