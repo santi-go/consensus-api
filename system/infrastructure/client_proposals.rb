@@ -1,7 +1,7 @@
 require 'mongo'
 
 module Infrastructure
-  class Client
+  class Client_proposals
     class << self
       def insert_one(document)
         collection.insert_one(document)
@@ -17,15 +17,15 @@ module Infrastructure
 
       private
 
-      def client
+      def client_proposals
         mongo_uri = ENV['MONGODB_URI']
         Mongo::Logger.logger.level = Logger::INFO
 
-        @client ||= Mongo::Client.new(mongo_uri)
+        @client_proposals ||= Mongo::Client.new(mongo_uri)
       end
 
       def collection
-        client[:proposals]
+        client_proposals[:proposals]
       end
     end
   end
