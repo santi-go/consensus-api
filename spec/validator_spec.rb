@@ -1,6 +1,4 @@
-require_relative '../system/json_validator.rb'
-
-
+require_relative '../system/helpers/json_validator.rb'
 
 describe 'JSON validator' do
 
@@ -77,7 +75,7 @@ describe 'JSON validator' do
                   'proposal' => ''}
 
     result = JSONValidator.validate_create_proposal?(body)
-    
+
     expect(result).to eq(false)
   end
 
