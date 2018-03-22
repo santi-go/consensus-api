@@ -5,6 +5,7 @@ require_relative '../app.rb'
 require_relative 'test_support/fixture'
 require_relative 'test_support/doubles/mailer'
 require_relative '../system/notify'
+require_relative '../system/repositories/votes'
 
 include Rack::Test::Methods
 
@@ -193,8 +194,10 @@ describe 'Vote endpoint' do
 
     post '/vote-consensus', body_sended.to_json
     post '/vote-consensus', body_sended.to_json
-    count_votes = Repository::Votes.votes_from_proposal('1').count
 
+    count_consensus = Repository::Votes.consensus_count('1')
+    count_disensus = Repository::Votes.disensus_count('1')
+    count_votes = count_consensus + count_disensus
     expect(count_votes).to eq(1)
   end
 
@@ -204,23 +207,25 @@ describe 'Vote endpoint' do
     Repository::Proposals.save(proposal)
 
     token_disensus = Notify.encode('id_proposal=1&user=pepe@correo.es&decision=disensus')
-    body_sended = {
+    body_disensus = {
       token: token_disensus
     }
+    post '/vote-consensus', body_disensus.to_json
+    retrieve_first_vote = Repository::Votes.retrieve('1', 'pepe@correo.es')
+    expect(retrieve_first_vote.decision).to eq('disensus')
+
     token_consensus = Notify.encode('id_proposal=1&user=pepe@correo.es&decision=consensus')
-    body_updated = {
+    body_consensus = {
       token: token_consensus
     }
+    post '/vote-consensus', body_consensus.to_json
+    retrieve_second_vote = Repository::Votes.retrieve('1', 'pepe@correo.es')
+    expect(retrieve_second_vote.decision).to eq('consensus')
 
-    post '/vote-consensus', body_sended.to_json
-
-    expect(Repository::Votes.repository_data.first.decision).to eq('disensus')
-
-    post '/vote-consensus', body_updated.to_json
-    count_votes = Repository::Votes.votes_from_proposal('1').count
-
+    count_consensus = Repository::Votes.consensus_count('1')
+    count_disensus = Repository::Votes.disensus_count('1')
+    count_votes = count_consensus + count_disensus
     expect(count_votes).to eq(1)
-    expect(Repository::Votes.repository_data.first.decision).to eq('consensus')
   end
 end
 

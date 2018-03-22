@@ -42,12 +42,12 @@ describe 'Vote' do
     vote3 = Vote.new(id_proposal: Fixture::ID_PROPOSAL, user: 'tres', decision: 'disensus')
     Repository::Votes.save(vote3)
 
-    total_voted = Repository::Votes.votes_from_proposal(Fixture::ID_PROPOSAL).count
+    # total_voted = Repository::Votes.votes_from_proposal(Fixture::ID_PROPOSAL).count
     voted_consensus = Repository::Votes.consensus_count(Fixture::ID_PROPOSAL)
     voted_disensus = Repository::Votes.disensus_count(Fixture::ID_PROPOSAL)
     expect(voted_consensus).to eq(2)
     expect(voted_disensus).to eq(1)
-    expect(total_voted).to eq(3)
+    # expect(total_voted).to eq(3)
   end
 
   it 'belongs to an independent proposal' do

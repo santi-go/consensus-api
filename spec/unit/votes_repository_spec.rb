@@ -32,12 +32,11 @@ describe 'Votes repository' do
     votation = Vote.new(id_proposal: id_proposal, user: user, decision: vote)
 
     saved_votation = Repository::Votes.save(votation)
-    votation_before_update = saved_votation.serialize
-
+    saved_votation.serialize
     Repository::Votes.update(saved_votation, 'disensus')
-
     retrieved_votes = Repository::Votes.retrieve(id_proposal, user)
     retrieved_votes.serialize
-    expect(retrieved_votes).not_to eq(votation_before_update)
+
+    expect(retrieved_votes).not_to eq(saved_votation)
   end
 end

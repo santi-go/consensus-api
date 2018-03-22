@@ -1,5 +1,6 @@
 require 'base64'
 require_relative '../notify'
+require_relative '../repositories/votes'
 
 module Actions
   class VoteAction
@@ -51,10 +52,7 @@ module Actions
       end
 
       def vote(id_proposal, user, decision)
-        voted = create_the_vote(id_proposal, user, decision)
-        the_vote = retrieve_the_vote(voted)
-        return save_the_vote(voted) if (the_vote == [])
-        update_the_vote(the_vote, voted.decision)
+        Repository::Votes.vote(id_proposal, user, decision)
       end
 
       def notify_votation_state(retrieved_proposal, user)
@@ -63,24 +61,6 @@ module Actions
 
       def decode(token)
         Base64.strict_decode64(token)
-      end
-
-      private
-
-      def create_the_vote(id_proposal, user, decision)
-        Vote.new(id_proposal: id_proposal, user: user, decision: decision)
-      end
-
-      def retrieve_the_vote(vote)
-        Repository::Votes.retrieve(vote.id_proposal, vote.user)
-      end
-
-      def save_the_vote(vote)
-        Repository::Votes.save(vote)
-      end
-
-      def update_the_vote(last_vote, decision)
-        Repository::Votes.update(last_vote, decision)
       end
     end
   end
